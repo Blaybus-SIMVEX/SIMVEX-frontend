@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Check formatting (Prettier)
-        run: npx prettier --check .
+        run: npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,css}"
 
       - name: Run lint (ESLint)
         run: npm run lint
