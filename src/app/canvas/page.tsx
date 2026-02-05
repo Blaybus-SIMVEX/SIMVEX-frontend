@@ -1,9 +1,9 @@
 'use client';
 
-import {Canvas} from '@react-three/fiber';
-import {OrbitControls, Stage} from '@react-three/drei';
-import {Model} from '@/app/components/Model';
-import {Suspense} from 'react';
+import { Model } from '@/app/components/Model';
+import { OrbitControls, Stage } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Suspense } from 'react';
 
 // TODO: public/models 폴더는 삭제할 것
 export default function Home() {
@@ -49,7 +49,10 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-4">
             {/* 3x2 Grid Placeholders */}
             {[...Array(6)].map((_, i) => (
-              <div key={i} className={`aspect-square bg-gray-400 hover:bg-gray-300 transition-colors cursor-pointer ${i === 1 || i === 4 ? 'bg-gray-300 flex items-center justify-center opacity-80' : ''}`}>
+              <div
+                key={i}
+                className={`aspect-square bg-gray-400 hover:bg-gray-300 transition-colors cursor-pointer ${i === 1 || i === 4 ? 'bg-gray-300 flex items-center justify-center opacity-80' : ''}`}
+              >
                 {/* Visual mocking for specific items based on screenshot */}
                 {i === 1 && <span className="text-4xl text-gray-500">⚙️</span>}
                 {i === 4 && <span className="text-4xl text-gray-500">🔧</span>}
