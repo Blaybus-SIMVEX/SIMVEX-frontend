@@ -6,6 +6,7 @@ import {V4EngineAssembly} from '@/app/components/V4EngineAssembly';
 import {DroneAssembly} from '@/app/components/DroneAssembly';
 import {Suspense, useState} from 'react';
 import { Leva } from 'leva';
+import { Model } from '@/app/components/Model';
 
 interface SelectedPartInfo {
   partName: string;
@@ -14,6 +15,7 @@ interface SelectedPartInfo {
 
 type ModelType = 'engine' | 'drone';
 
+// TODO: public/models 폴더는 삭제할 것
 export default function Home() {
   const [selectedPart, setSelectedPart] = useState<SelectedPartInfo | null>(null);
   const [modelType, setModelType] = useState<ModelType>('drone'); // 기본값: 드론
@@ -99,7 +101,10 @@ export default function Home() {
           <div className="grid grid-cols-3 gap-4">
             {/* 3x2 Grid Placeholders */}
             {[...Array(6)].map((_, i) => (
-              <div key={i} className={`aspect-square bg-gray-400 hover:bg-gray-300 transition-colors cursor-pointer ${i === 1 || i === 4 ? 'bg-gray-300 flex items-center justify-center opacity-80' : ''}`}>
+              <div
+                key={i}
+                className={`aspect-square bg-gray-400 hover:bg-gray-300 transition-colors cursor-pointer ${i === 1 || i === 4 ? 'bg-gray-300 flex items-center justify-center opacity-80' : ''}`}
+              >
                 {/* Visual mocking for specific items based on screenshot */}
                 {i === 1 && <span className="text-4xl text-gray-500">⚙️</span>}
                 {i === 4 && <span className="text-4xl text-gray-500">🔧</span>}
