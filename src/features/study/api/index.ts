@@ -1,7 +1,7 @@
 import { IObjects } from '@/features/study/types';
 
 export async function getObjects(page: number): Promise<IObjects['data']> {
-  const res = await fetch(`/api/objects`, {
+  const res = await fetch(`/api/objects?page=${page}`, {
     cache: 'no-store',
   });
 
