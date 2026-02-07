@@ -1,12 +1,13 @@
-import { CardData } from '@/features/types';
+import { ObjectData } from '@/features/study/types';
 import Tags from '@/shared/ui/Tags';
 import Image from 'next/image';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  data: CardData;
+  data: ObjectData;
 }
 
-export default function Card({ data, ...rest }: Props) {
+export default function ObjectCard({ data, ...rest }: Props) {
+  console.log(data);
   return (
     <article
       className="
@@ -28,7 +29,7 @@ export default function Card({ data, ...rest }: Props) {
           <p className="text-[16px] text-gray-600 truncate">{data.description}</p>
         </div>
         <div className="flex flex-wrap gap-2.5">
-          {data.categoryTags.map((tagName: string) => (
+          {data.categories.map((tagName: string) => (
             <Tags key={tagName} tagName={tagName} />
           ))}
         </div>

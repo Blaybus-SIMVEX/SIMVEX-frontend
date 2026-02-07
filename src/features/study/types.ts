@@ -4,7 +4,7 @@ export interface ObjectData {
   nameEn: string;
   description: string;
   thumbnailUrl: string;
-  category: string[];
+  categories: string[];
 }
 
 export interface IObjects {
