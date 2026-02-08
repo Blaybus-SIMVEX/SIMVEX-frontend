@@ -2,14 +2,13 @@
 
 import { useMemoActions, useMemos } from '@/features/3d-viewer/api/use3DViewer';
 import { IMemo } from '@/features/3d-viewer/types';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MemoPadProps {
   objectId: number;
-  sessionId: string;
 }
 
-export default function MemoPad({ objectId, sessionId }: MemoPadProps) {
+export default function MemoPad({ objectId }: MemoPadProps) {
   const { memos, isLoading, fetchMemos } = useMemos();
   const { createMemo, updateMemo, deleteMemo, isLoading: isActioning } = useMemoActions();
 
@@ -18,11 +17,24 @@ export default function MemoPad({ objectId, sessionId }: MemoPadProps) {
   const [editingMemo, setEditingMemo] = useState<IMemo | null>(null);
   const [editText, setEditText] = useState('');
 
+  // Session ID management
+  const [sessionId, setSessionId] = useState('');
+
+  useEffect(() => {
+    // Generate or retrieve session ID on mount
+    let id = sessionStorage.getItem('simvex-session-id');
+    if (!id) {
+      id = `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      sessionStorage.setItem('simvex-session-id', id);
+    }
+    setSessionId(id);
+  }, []);
+
   useEffect(() => {
     if (objectId && sessionId) {
       fetchMemos(objectId, sessionId);
     }
-  }, [objectId, sessionId]);
+  }, [objectId, sessionId, fetchMemos]);
 
   const handleAddMemo = async () => {
     if (!newMemoText.trim() || isActioning) return;
@@ -163,10 +175,7 @@ export default function MemoPad({ objectId, sessionId }: MemoPadProps) {
                     className="w-full h-[60px] resize-none border-none focus:ring-0 text-[14px] leading-relaxed p-0"
                   />
                   <div className="flex justify-end gap-2 mt-2 pt-2 border-t border-gray-100">
-                    <button
-                      onClick={cancelEditing}
-                      className="text-xs text-gray-500 hover:text-gray-800"
-                    >
+                    <button onClick={cancelEditing} className="text-xs text-gray-500 hover:text-gray-800">
                       취소
                     </button>
                     <button
@@ -183,10 +192,7 @@ export default function MemoPad({ objectId, sessionId }: MemoPadProps) {
                 <div className="w-full bg-[#E8F3FF] rounded-[8px] p-3 relative group hover:shadow-md transition-shadow border border-transparent hover:border-[#4880FF]/30">
                   {/* Action Buttons */}
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                    <button
-                      onClick={() => startEditing(memo)}
-                      className="text-[#8FB6FF] hover:text-[#4880FF] p-1"
-                    >
+                    <button onClick={() => startEditing(memo)} className="text-[#8FB6FF] hover:text-[#4880FF] p-1">
                       <svg
                         width="14"
                         height="14"
@@ -201,10 +207,7 @@ export default function MemoPad({ objectId, sessionId }: MemoPadProps) {
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                       </svg>
                     </button>
-                    <button
-                      onClick={() => handleDeleteMemo(memo.id)}
-                      className="text-[#8FB6FF] hover:text-red-500 p-1"
-                    >
+                    <button onClick={() => handleDeleteMemo(memo.id)} className="text-[#8FB6FF] hover:text-red-500 p-1">
                       <svg
                         width="14"
                         height="14"

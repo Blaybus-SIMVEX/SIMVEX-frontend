@@ -2,7 +2,7 @@
 
 import { useObjectDetail } from '@/features/3d-viewer/api/use3DViewer';
 import { IComponent } from '@/features/3d-viewer/types';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface InfoModalProps {
   objectId: number;
@@ -10,11 +10,7 @@ interface InfoModalProps {
   selectedPartName?: string | null;
 }
 
-export default function InfoModal({
-  objectId,
-  onClose,
-  selectedPartName,
-}: InfoModalProps) {
+export default function InfoModal({ objectId, onClose, selectedPartName }: InfoModalProps) {
   const [activeTab, setActiveTab] = useState<'product' | 'detail'>('product');
   const [selectedComponent, setSelectedComponent] = useState<IComponent | null>(null);
 
@@ -25,7 +21,7 @@ export default function InfoModal({
     if (objectId) {
       fetchObjectDetail(objectId);
     }
-  }, [objectId]);
+  }, [objectId, fetchObjectDetail]);
 
   // 부품 선택 시 detail 탭으로 전환
   const handleComponentClick = (component: IComponent) => {
@@ -122,9 +118,7 @@ export default function InfoModal({
             {/* 이론 섹션 */}
             <div className="space-y-2">
               <h3 className="font-bold text-[16px] text-[#222222]">이론</h3>
-              <p className="text-[14px] text-[#444444] leading-[1.6]">
-                {objectDetail?.theory || ''}
-              </p>
+              <p className="text-[14px] text-[#444444] leading-[1.6]">{objectDetail?.theory || ''}</p>
             </div>
 
             {/* 부품 목록 섹션 */}
@@ -139,12 +133,8 @@ export default function InfoModal({
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-[14px] font-medium text-[#333333]">
-                          {component.name}
-                        </p>
-                        <p className="text-[12px] text-[#666666]">
-                          {component.nameEn}
-                        </p>
+                        <p className="text-[14px] font-medium text-[#333333]">{component.name}</p>
+                        <p className="text-[12px] text-[#666666]">{component.nameEn}</p>
                       </div>
                       <svg
                         width="16"
@@ -174,21 +164,15 @@ export default function InfoModal({
                   <div className="space-y-3">
                     <div className="flex items-start gap-2">
                       <span className="text-[13px] text-[#666666] min-w-[60px]">영문명</span>
-                      <span className="text-[14px] text-[#333333]">
-                        {selectedComponent.nameEn}
-                      </span>
+                      <span className="text-[14px] text-[#333333]">{selectedComponent.nameEn}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-[13px] text-[#666666] min-w-[60px]">재질</span>
-                      <span className="text-[14px] text-[#333333]">
-                        {selectedComponent.material}
-                      </span>
+                      <span className="text-[14px] text-[#333333]">{selectedComponent.material}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-[13px] text-[#666666] min-w-[60px]">역할</span>
-                      <span className="text-[14px] text-[#333333] leading-relaxed">
-                        {selectedComponent.role}
-                      </span>
+                      <span className="text-[14px] text-[#333333] leading-relaxed">{selectedComponent.role}</span>
                     </div>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAIChat } from '@/features/3d-viewer/api/use3DViewer';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Message {
   id: string;
@@ -83,22 +83,13 @@ export default function AIAssistant({ objectId }: AIAssistantProps) {
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="px-[12px] py-[16px] bg-white border-b border-[#F5F5F5]">
-        <h3 className="font-bold text-[18px] text-[#111111] leading-tight ml-2">
-          AI 어시스턴트
-        </h3>
+        <h3 className="font-bold text-[18px] text-[#111111] leading-tight ml-2">AI 어시스턴트</h3>
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 overflow-y-auto px-[12px] py-4 space-y-4 bg-white scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex w-full ${
-              message.role === 'user'
-                ? 'justify-end'
-                : 'justify-start'
-            }`}
-          >
+          <div key={message.id} className={`flex w-full ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
               className={`max-w-[85%] px-4 py-3 text-[14px] leading-relaxed whitespace-pre-wrap ${
                 message.role === 'user'
@@ -111,15 +102,15 @@ export default function AIAssistant({ objectId }: AIAssistantProps) {
           </div>
         ))}
         {isLoading && (
-            <div className="flex justify-start">
-                 <div className="bg-white px-4 py-3 rounded-[18px] rounded-tl-[4px] border border-[#E5E5E5] shadow-sm">
-                    <div className="flex gap-1">
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-100"></span>
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-200"></span>
-                    </div>
-                 </div>
+          <div className="flex justify-start">
+            <div className="bg-white px-4 py-3 rounded-[18px] rounded-tl-[4px] border border-[#E5E5E5] shadow-sm">
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+              </div>
             </div>
+          </div>
         )}
         <div ref={messagesEndRef} />
       </div>
@@ -140,9 +131,18 @@ export default function AIAssistant({ objectId }: AIAssistantProps) {
             disabled={isLoading || !input.trim()}
             className="absolute right-2 w-8 h-8 flex items-center justify-center bg-[#111111] text-white rounded-full hover:bg-black disabled:opacity-30 transition-all shadow-md"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="19" x2="12" y2="5"></line>
-                <polyline points="5 12 12 5 19 12"></polyline>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
             </svg>
           </button>
         </form>
