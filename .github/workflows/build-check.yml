@@ -23,3 +23,6 @@ jobs:
 
       - name: Run build
         run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          ANOTHER_SECRET_KEY: ${{ secrets.ANOTHER_SECRET_KEY }}
