@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { ThreeEvent } from '@react-three/fiber';
+import { folder, useControls } from 'leva';
+import React, { useMemo, useState } from 'react';
 import * as THREE from 'three';
-import { useControls, folder } from 'leva';
 
 const MODEL_BASE_PATH = '/models/V4_Engine';
 
@@ -21,25 +21,25 @@ const PART_PATHS = {
 
 // 부품 이름 한글 매핑
 const PART_NAMES: { [key: string]: string } = {
-  'crankshaft': '크랭크샤프트',
-  'piston': '피스톤',
-  'ring': '피스톤 링',
-  'pin': '피스톤 핀',
-  'conrod': '커넥팅로드',
-  'cap': '커넥팅로드 측',
-  'bolt': '커넥팅로드 볼트',
+  crankshaft: '크랭크샤프트',
+  piston: '피스톤',
+  ring: '피스톤 링',
+  pin: '피스톤 핀',
+  conrod: '커넥팅로드',
+  cap: '커넥팅로드 측',
+  bolt: '커넥팅로드 볼트',
 };
 
 // 부품명에서 한글 이름 가져오기
 export function getPartDisplayName(partName: string): string {
   if (partName === 'crankshaft') return PART_NAMES['crankshaft'];
-  
+
   // cyl1-piston, cyl2-ring0 등의 형식에서 부품명 추출
   const match = partName.match(/cyl(\d+)-(.+?)(-?\d*)$/);
   if (match) {
     const [, cylNum, partType, partIndex] = match;
     let baseName = '';
-    
+
     if (partType === 'piston') baseName = PART_NAMES['piston'];
     else if (partType === 'ring') baseName = PART_NAMES['ring'];
     else if (partType === 'pin') baseName = PART_NAMES['pin'];
@@ -47,11 +47,11 @@ export function getPartDisplayName(partName: string): string {
     else if (partType === 'cap') baseName = PART_NAMES['cap'];
     else if (partType === 'bolt') baseName = PART_NAMES['bolt'];
     else baseName = partType;
-    
+
     const indexStr = partIndex ? ` ${parseInt(partIndex) + 1}` : '';
     return `실린더 ${cylNum} - ${baseName}${indexStr}`;
   }
-  
+
   return partName;
 }
 
@@ -61,16 +61,16 @@ const ENGINE_CONFIG = {
   // 4개 실린더의 Z축 위치 - 크랭크샤프트의 4개 크랭크핀 위치에 맞춤
   // 크랭크샤프트 모델 전체 길이를 커버하도록 배치
   cylinderZPositions: [-0.035, -0.012, 0.012, 0.035],
-  
+
   // 각 실린더의 크랭크 각도 (직렬 4기통: 피스톤 1,4는 하사점, 2,3은 상사점)
   crankAngles: [Math.PI, 0, 0, Math.PI], // 180°, 0°, 0°, 180°
-  
+
   // 크랭크 반경 (크랭크핀까지의 거리)
   crankRadius: 0.012,
-  
+
   // 커넥팅로드 길이
   conrodLength: 0.035,
-  
+
   // 기본 높이 오프셋 (크랭크샤프트 중심 높이)
   baseHeight: 0.0,
 };
@@ -86,7 +86,15 @@ interface PartProps {
 }
 
 // 개별 부품 컴포넌트
-function Part({ url, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, partName, isSelected, onClick }: PartProps) {
+function Part({
+  url,
+  position = [0, 0, 0],
+  rotation = [0, 0, 0],
+  scale = 1,
+  partName,
+  isSelected,
+  onClick,
+}: PartProps) {
   const { scene } = useGLTF(url);
   const clonedScene = useMemo(() => scene.clone(), [scene]);
 
@@ -115,15 +123,7 @@ function Part({ url, position = [0, 0, 0], rotation = [0, 0, 0], scale = 1, part
     onClick(partName);
   };
 
-  return (
-    <primitive
-      object={clonedScene}
-      position={position}
-      rotation={rotation}
-      scale={scale}
-      onClick={handleClick}
-    />
-  );
+  return <primitive object={clonedScene} position={position} rotation={rotation} scale={scale} onClick={handleClick} />;
 }
 
 // 실린더 유닛 - 하나의 실린더 어셈블리 (피스톤 + 커넥팅로드 + 부속품)
@@ -138,15 +138,23 @@ interface CylinderUnitProps {
   conrodLength: number;
 }
 
-function CylinderUnit({ cylinderIndex, zPosition, crankAngle, selectedPart, onPartClick, baseHeight, crankRadius, conrodLength }: CylinderUnitProps) {
-  
+function CylinderUnit({
+  cylinderIndex,
+  zPosition,
+  crankAngle,
+  selectedPart,
+  onPartClick,
+  baseHeight,
+  crankRadius,
+  conrodLength,
+}: CylinderUnitProps) {
   // 크랭크 각도에 따른 위치 계산
   const crankPinY = crankRadius * Math.cos(crankAngle);
   const crankPinX = crankRadius * Math.sin(crankAngle);
-  
+
   // 커넥팅로드 각도 (피스톤이 수직으로만 움직이도록)
   const rodAngle = Math.asin(crankPinX / conrodLength);
-  
+
   // 피스톤 높이 계산
   const pistonHeight = baseHeight + crankPinY + conrodLength * Math.cos(rodAngle);
 
@@ -257,7 +265,7 @@ export function V4EngineAssembly({ onSelectPart }: V4EngineAssemblyProps) {
   const handlePartClick = (partName: string) => {
     const newSelected = selectedPart === partName ? null : partName;
     setSelectedPart(newSelected);
-    
+
     if (onSelectPart) {
       if (newSelected) {
         onSelectPart(newSelected, getPartDisplayName(newSelected));
@@ -309,6 +317,6 @@ export function V4EngineAssembly({ onSelectPart }: V4EngineAssemblyProps) {
 }
 
 // GLB 파일 프리로드
-Object.values(PART_PATHS).forEach(path => {
+Object.values(PART_PATHS).forEach((path) => {
   useGLTF.preload(path);
 });

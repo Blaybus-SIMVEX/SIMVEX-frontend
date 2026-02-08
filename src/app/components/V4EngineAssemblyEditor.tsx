@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useGLTF, TransformControls } from '@react-three/drei';
+import { TransformControls, useGLTF } from '@react-three/drei';
 import { ThreeEvent } from '@react-three/fiber';
-import { useControls, folder, button } from 'leva';
+import { button, folder, useControls } from 'leva';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const MODEL_BASE_PATH = '/models/V4_Engine';
@@ -41,14 +41,14 @@ interface EditablePartProps {
 }
 
 // 편집 가능한 부품 컴포넌트
-function EditablePart({ 
-  url, 
-  partKey, 
-  isSelected, 
-  onSelect, 
+function EditablePart({
+  url,
+  partKey,
+  isSelected,
+  onSelect,
   position,
   rotation,
-  onTransformChange 
+  onTransformChange,
 }: EditablePartProps) {
   const { scene } = useGLTF(url);
   const clonedScene = useMemo(() => scene.clone(), [scene]);
@@ -91,21 +91,14 @@ function EditablePart({
   // TransformControls 드래그 시 실시간 상태 업데이트
   const handleTransformChange = () => {
     if (groupRef.current) {
-      onTransformChange(
-        partKey, 
-        groupRef.current.position.clone(), 
-        groupRef.current.rotation.clone()
-      );
+      onTransformChange(partKey, groupRef.current.position.clone(), groupRef.current.rotation.clone());
     }
   };
 
   return (
     <>
       <group ref={groupRef}>
-        <primitive
-          object={clonedScene}
-          onClick={handleClick}
-        />
+        <primitive object={clonedScene} onClick={handleClick} />
       </group>
       {isSelected && groupRef.current && (
         <TransformControls
@@ -123,12 +116,17 @@ function EditablePart({
 export function V4EngineAssemblyEditor() {
   const [selectedPart, setSelectedPart] = useState<string | null>(null);
   const [transformMode, setTransformMode] = useState<'translate' | 'rotate'>('translate');
-  
+
   // 각 부품의 위치/회전 상태
-  const [partTransforms, setPartTransforms] = useState<Record<string, { 
-    position: [number, number, number]; 
-    rotation: [number, number, number]; 
-  }>>({
+  const [partTransforms, setPartTransforms] = useState<
+    Record<
+      string,
+      {
+        position: [number, number, number];
+        rotation: [number, number, number];
+      }
+    >
+  >({
     crankshaft: { position: [0, 0, 0], rotation: [0, 0, 0] },
     piston: { position: [0, 0, 0], rotation: [0, 0, 0] },
     pistonRing: { position: [0, 0, 0], rotation: [0, 0, 0] },
@@ -146,15 +144,15 @@ export function V4EngineAssemblyEditor() {
     },
     '변환 모드': {
       value: transformMode,
-      options: { '이동': 'translate', '회전': 'rotate' },
+      options: { 이동: 'translate', 회전: 'rotate' },
       onChange: (v) => setTransformMode(v as 'translate' | 'rotate'),
     },
     '좌표값 출력': button(() => {
       console.log('=== 현재 부품 좌표값 ===');
       Object.entries(partTransforms).forEach(([key, transform]) => {
         console.log(`${PART_NAMES[key]}:`, {
-          position: transform.position.map(v => v.toFixed(4)),
-          rotation: transform.rotation.map(v => (v * 180 / Math.PI).toFixed(2) + '°'),
+          position: transform.position.map((v) => v.toFixed(4)),
+          rotation: transform.rotation.map((v) => ((v * 180) / Math.PI).toFixed(2) + '°'),
         });
       });
       console.log('=== JSON 형식 ===');
@@ -165,91 +163,93 @@ export function V4EngineAssemblyEditor() {
   // 선택된 부품의 Leva 컨트롤
   const selectedControls = useControls(
     selectedPart ? `${PART_NAMES[selectedPart]} 위치` : '부품 선택 필요',
-    selectedPart ? {
-      posX: {
-        value: partTransforms[selectedPart]?.position[0] || 0,
-        step: 0.001,
-        onChange: (v) => updatePartPosition(selectedPart, 0, v),
-      },
-      posY: {
-        value: partTransforms[selectedPart]?.position[1] || 0,
-        step: 0.001,
-        onChange: (v) => updatePartPosition(selectedPart, 1, v),
-      },
-      posZ: {
-        value: partTransforms[selectedPart]?.position[2] || 0,
-        step: 0.001,
-        onChange: (v) => updatePartPosition(selectedPart, 2, v),
-      },
-      rotX: {
-        value: (partTransforms[selectedPart]?.rotation[0] || 0) * 180 / Math.PI,
-        min: -180,
-        max: 180,
-        step: 1,
-        onChange: (v) => updatePartRotation(selectedPart, 0, v * Math.PI / 180),
-      },
-      rotY: {
-        value: (partTransforms[selectedPart]?.rotation[1] || 0) * 180 / Math.PI,
-        min: -180,
-        max: 180,
-        step: 1,
-        onChange: (v) => updatePartRotation(selectedPart, 1, v * Math.PI / 180),
-      },
-      rotZ: {
-        value: (partTransforms[selectedPart]?.rotation[2] || 0) * 180 / Math.PI,
-        min: -180,
-        max: 180,
-        step: 1,
-        onChange: (v) => updatePartRotation(selectedPart, 2, v * Math.PI / 180),
-      },
-    } : {},
-    [selectedPart, partTransforms]
+    selectedPart
+      ? {
+          posX: {
+            value: partTransforms[selectedPart]?.position[0] || 0,
+            step: 0.001,
+            onChange: (v) => updatePartPosition(selectedPart, 0, v),
+          },
+          posY: {
+            value: partTransforms[selectedPart]?.position[1] || 0,
+            step: 0.001,
+            onChange: (v) => updatePartPosition(selectedPart, 1, v),
+          },
+          posZ: {
+            value: partTransforms[selectedPart]?.position[2] || 0,
+            step: 0.001,
+            onChange: (v) => updatePartPosition(selectedPart, 2, v),
+          },
+          rotX: {
+            value: ((partTransforms[selectedPart]?.rotation[0] || 0) * 180) / Math.PI,
+            min: -180,
+            max: 180,
+            step: 1,
+            onChange: (v) => updatePartRotation(selectedPart, 0, (v * Math.PI) / 180),
+          },
+          rotY: {
+            value: ((partTransforms[selectedPart]?.rotation[1] || 0) * 180) / Math.PI,
+            min: -180,
+            max: 180,
+            step: 1,
+            onChange: (v) => updatePartRotation(selectedPart, 1, (v * Math.PI) / 180),
+          },
+          rotZ: {
+            value: ((partTransforms[selectedPart]?.rotation[2] || 0) * 180) / Math.PI,
+            min: -180,
+            max: 180,
+            step: 1,
+            onChange: (v) => updatePartRotation(selectedPart, 2, (v * Math.PI) / 180),
+          },
+        }
+      : {},
+    [selectedPart, partTransforms],
   );
 
   const updatePartPosition = (partKey: string, axis: number, value: number) => {
-    setPartTransforms(prev => {
+    setPartTransforms((prev) => {
       const newPos = [...prev[partKey].position] as [number, number, number];
       newPos[axis] = value;
       return {
         ...prev,
-        [partKey]: { ...prev[partKey], position: newPos }
+        [partKey]: { ...prev[partKey], position: newPos },
       };
     });
   };
 
   const updatePartRotation = (partKey: string, axis: number, value: number) => {
-    setPartTransforms(prev => {
+    setPartTransforms((prev) => {
       const newRot = [...prev[partKey].rotation] as [number, number, number];
       newRot[axis] = value;
       return {
         ...prev,
-        [partKey]: { ...prev[partKey], rotation: newRot }
+        [partKey]: { ...prev[partKey], rotation: newRot },
       };
     });
   };
 
   const handleTransformChange = (partKey: string, position: THREE.Vector3, rotation: THREE.Euler) => {
-    setPartTransforms(prev => ({
+    setPartTransforms((prev) => ({
       ...prev,
       [partKey]: {
         position: [position.x, position.y, position.z],
         rotation: [rotation.x, rotation.y, rotation.z],
-      }
+      },
     }));
-    
+
     // 콘솔에 실시간 좌표 출력
     console.log(`${PART_NAMES[partKey]} 위치 변경:`, {
       position: [position.x.toFixed(4), position.y.toFixed(4), position.z.toFixed(4)],
       rotation: [
-        (rotation.x * 180 / Math.PI).toFixed(2) + '°',
-        (rotation.y * 180 / Math.PI).toFixed(2) + '°',
-        (rotation.z * 180 / Math.PI).toFixed(2) + '°',
+        ((rotation.x * 180) / Math.PI).toFixed(2) + '°',
+        ((rotation.y * 180) / Math.PI).toFixed(2) + '°',
+        ((rotation.z * 180) / Math.PI).toFixed(2) + '°',
       ],
     });
   };
 
   const handleSelect = (partKey: string) => {
-    setSelectedPart(prev => prev === partKey ? null : partKey);
+    setSelectedPart((prev) => (prev === partKey ? null : partKey));
   };
 
   const handleBackgroundClick = () => {
@@ -275,6 +275,6 @@ export function V4EngineAssemblyEditor() {
 }
 
 // GLB 파일 프리로드
-Object.values(PART_PATHS).forEach(path => {
+Object.values(PART_PATHS).forEach((path) => {
   useGLTF.preload(path);
 });

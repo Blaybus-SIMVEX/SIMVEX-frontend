@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { ThreeEvent } from '@react-three/fiber';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const MODEL_BASE_PATH = '/models/Drone';
@@ -23,7 +23,7 @@ const COMPLETE_DRONE_PATH = `${MODEL_BASE_PATH}/drone.glb`;
 // 234 = 기타 (1개: 8)
 
 const NODE_PART_MAPPING: Record<string, { type: string; index: number }> = {
-  'Solid1': { type: 'armGear', index: 1 },
+  Solid1: { type: 'armGear', index: 1 },
   'Solid1.001': { type: 'beaterDisc', index: 1 },
   'Solid1.002': { type: 'gearing', index: 1 },
   'Solid1.003': { type: 'impellarBlade', index: 2 },
@@ -48,22 +48,28 @@ const NODE_PART_MAPPING: Record<string, { type: string; index: number }> = {
 };
 
 const PART_NAMES: Record<string, string> = {
-  'mainFrame': '메인 프레임',
-  'mainFrameMir': '메인 프레임 (미러)',
-  'armGear': '암 기어',
-  'leg': '다리',
-  'impellarBlade': '프로펠러',
-  'beaterDisc': '비터 디스크',
-  'gearing': '기어링',
-  'nut': '너트',
-  'screw': '나사',
-  'other': '기타',
+  mainFrame: '메인 프레임',
+  mainFrameMir: '메인 프레임 (미러)',
+  armGear: '암 기어',
+  leg: '다리',
+  impellarBlade: '프로펠러',
+  beaterDisc: '비터 디스크',
+  gearing: '기어링',
+  nut: '너트',
+  screw: '나사',
+  other: '기타',
 };
 
 export function getPartDisplayName(partType: string, index: number): string {
   const koreanName = PART_NAMES[partType] || partType;
-  if (partType === 'mainFrame' || partType === 'mainFrameMir' || partType === 'beaterDisc' || 
-      partType === 'nut' || partType === 'screw' || partType === 'other') {
+  if (
+    partType === 'mainFrame' ||
+    partType === 'mainFrameMir' ||
+    partType === 'beaterDisc' ||
+    partType === 'nut' ||
+    partType === 'screw' ||
+    partType === 'other'
+  ) {
     return koreanName;
   }
   return `${koreanName} ${index}`;
@@ -78,18 +84,18 @@ export function DroneAssembly({ onSelectPart }: DroneAssemblyProps) {
   const { scene } = useGLTF(COMPLETE_DRONE_PATH);
   const [selectedNodeName, setSelectedNodeName] = useState<string | null>(null);
   const groupRef = useRef<THREE.Group>(null);
-  
+
   // 씬 복제 및 초기화
   const clonedScene = useMemo(() => {
     const clone = scene.clone();
-    
+
     // 모든 메시에 이름 저장
     clone.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.userData.originalName = child.parent?.name || child.name;
       }
     });
-    
+
     return clone;
   }, [scene]);
 
@@ -99,7 +105,7 @@ export function DroneAssembly({ onSelectPart }: DroneAssemblyProps) {
       if (child instanceof THREE.Mesh && child.material) {
         const material = child.material as THREE.MeshStandardMaterial;
         const nodeName = child.userData.originalName || child.parent?.name || child.name;
-        
+
         if (material.emissive) {
           if (selectedNodeName && nodeName === selectedNodeName) {
             material.emissive = new THREE.Color(0x00aaff);
@@ -115,12 +121,12 @@ export function DroneAssembly({ onSelectPart }: DroneAssemblyProps) {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    
+
     const mesh = e.object as THREE.Mesh;
     const nodeName = mesh.userData.originalName || mesh.parent?.name || mesh.name;
-    
+
     console.log('Clicked node:', nodeName);
-    
+
     if (nodeName === selectedNodeName) {
       setSelectedNodeName(null);
       if (onSelectPart) {
@@ -128,7 +134,7 @@ export function DroneAssembly({ onSelectPart }: DroneAssemblyProps) {
       }
     } else {
       setSelectedNodeName(nodeName);
-      
+
       const mapping = NODE_PART_MAPPING[nodeName];
       if (mapping && onSelectPart) {
         const displayName = getPartDisplayName(mapping.type, mapping.index);
@@ -146,11 +152,7 @@ export function DroneAssembly({ onSelectPart }: DroneAssemblyProps) {
 
   return (
     <group ref={groupRef} onClick={handleBackgroundClick} scale={5} rotation={[0, 0, 0]}>
-      <primitive
-        object={clonedScene}
-        position={[0, 0, 0]}
-        onClick={handleClick}
-      />
+      <primitive object={clonedScene} position={[0, 0, 0]} onClick={handleClick} />
     </group>
   );
 }

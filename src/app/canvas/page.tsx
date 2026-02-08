@@ -1,12 +1,12 @@
 'use client';
 
-import {Canvas} from '@react-three/fiber';
-import {OrbitControls, Environment, Stage} from '@react-three/drei';
-import {V4EngineAssembly} from '@/app/components/V4EngineAssembly';
-import {DroneAssembly} from '@/app/components/DroneAssembly';
-import {Suspense, useState} from 'react';
-import { Leva } from 'leva';
+import { DroneAssembly } from '@/app/components/DroneAssembly';
 import { Model } from '@/app/components/Model';
+import { V4EngineAssembly } from '@/app/components/V4EngineAssembly';
+import { Environment, OrbitControls, Stage } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Leva } from 'leva';
+import { Suspense, useState } from 'react';
 
 interface SelectedPartInfo {
   partName: string;
@@ -44,21 +44,23 @@ export default function Home() {
           {/* 모델 선택 버튼 */}
           <div className="flex gap-2 ml-4">
             <button
-              onClick={() => { setModelType('engine'); setSelectedPart(null); }}
+              onClick={() => {
+                setModelType('engine');
+                setSelectedPart(null);
+              }}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                modelType === 'engine'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                modelType === 'engine' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
               }`}
             >
               🔧 V4 엔진
             </button>
             <button
-              onClick={() => { setModelType('drone'); setSelectedPart(null); }}
+              onClick={() => {
+                setModelType('drone');
+                setSelectedPart(null);
+              }}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                modelType === 'drone'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                modelType === 'drone' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
               }`}
             >
               🚁 드론
@@ -66,7 +68,8 @@ export default function Home() {
           </div>
         </div>
         <p className="text-sm text-gray-600 mt-2">
-          부품을 클릭하여 선택하면 청록색으로 하이라이트됩니다. 마우스로 드래그하여 회전, 스크롤로 확대/축소할 수 있습니다.
+          부품을 클릭하여 선택하면 청록색으로 하이라이트됩니다. 마우스로 드래그하여 회전, 스크롤로 확대/축소할 수
+          있습니다.
         </p>
       </header>
 
