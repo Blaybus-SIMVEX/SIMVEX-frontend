@@ -1,5 +1,6 @@
 import RightArrow from '@/assets/icons/right-arrow.svg';
 import Logo from '@/shared/ui/Logo';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const STEPS = [
@@ -116,11 +117,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 기능 리스트 (수직 배치) */}
           <div className="flex flex-col gap-24 md:gap-32">
-            {/* Feature 1: 카테고리별 학습 모델 선택 */}
             <div className="flex flex-col md:flex-row justify-between gap-10 md:gap-16">
-              {/* 텍스트 영역 */}
               <div className="flex-1 flex flex-col items-start text-left min-w-[300px]">
                 <h3 className="text-[24px] md:text-[28px] font-bold text-gray-900 leading-snug mb-5">
                   카테고리별
@@ -133,10 +131,19 @@ export default function Home() {
                   실제 산업 기계의 작동 원리를 3D 시뮬레이션을 통해 학습하세요.
                 </p>
               </div>
+
               <div className="flex-1 w-full">
-                <div className="relative w-full aspect-[16/10] bg-gray-50 rounded-[16px] border border-[#E7EFFF] shadow-md overflow-hidden flex items-center justify-center">
-                  <span className="text-gray-400 font-medium">(스터디 목록 화면 스크린샷)</span>
-                  {/* TODO 스샷 필요 <Image src="/feature-1.png" alt="학습 모델 선택" fill className="object-cover" /> */}
+                <div className="flex-1 w-full flex justify-center md:justify-end">
+                  <div className="w-full max-w-[600px] overflow-hidden">
+                    <Image
+                      src="/images/landing/feature01.png"
+                      alt="학습 모델 선택 화면 스크린샷"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto"
+                      sizes="(max-width: 768px) 100vw, 600px"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -154,10 +161,19 @@ export default function Home() {
                   상호작용하며 작동 원리를 자연스럽게 이해하세요.
                 </p>
               </div>
+
               <div className="flex-1 w-full">
-                <div className="relative w-full aspect-[16/10] bg-gray-50 rounded-[16px] border border-[#E7EFFF] shadow-md overflow-hidden flex items-center justify-center">
-                  <span className="text-gray-400 font-medium">(3D 뷰어 화면 스크린샷)</span>
-                  {/* TODO 스샷 필요 <Image src="/feature-2.png" alt="3D 시뮬레이션" fill className="object-cover" /> */}
+                <div className="flex-1 w-full flex justify-center md:justify-end">
+                  <div className="w-full max-w-[600px] overflow-hidden">
+                    <Image
+                      src="/images/landing/feature02.png"
+                      alt="3D 시뮬레이션 화면 스크린샷"
+                      width={600}
+                      height={400}
+                      className="w-full h-auto"
+                      sizes="(max-width: 768px) 100vw, 600px"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
