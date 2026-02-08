@@ -1,12 +1,7 @@
 'use client';
 
-import { useApi } from '@/lib/useApi';
+import { useAIChat } from '@/features/3d-viewer/api/use3DViewer';
 import { useState, useRef, useEffect } from 'react';
-
-interface ChatResponse {
-  answer: string;
-  id: number;
-}
 
 interface Message {
   id: string;
@@ -14,8 +9,12 @@ interface Message {
   content: string;
 }
 
-export default function AIAssistant() {
-  const { POST, isLoading } = useApi<ChatResponse>();
+interface AIAssistantProps {
+  objectId: number;
+}
+
+export default function AIAssistant({ objectId }: AIAssistantProps) {
+  const { sendMessage, isLoading } = useAIChat();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -48,8 +47,8 @@ export default function AIAssistant() {
     setInput('');
 
     try {
-      const response = await POST('/api/ai/chat', {
-        object3DId: 1,
+      const response = await sendMessage({
+        object3DId: objectId,
         question: input,
         conversationHistory: messages.map((m) => ({
           role: m.role,

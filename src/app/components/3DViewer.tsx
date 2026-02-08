@@ -4,7 +4,6 @@ import { DroneAssembly } from '@/app/components/DroneAssembly';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Suspense, useState, useEffect } from 'react';
-import LeafSpringInfo from './LeafSpringInfo';
 
 interface SelectedPartInfo {
   partName: string;
@@ -26,7 +25,6 @@ export default function ThreeDViewer({
 }: ThreeDViewerProps) {
   const [assemblyStep, setAssemblyStep] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [showInfoPanel, setShowInfoPanel] = useState(true);
 
   // Show tooltip initially after a delay
   useEffect(() => {
@@ -141,13 +139,6 @@ export default function ThreeDViewer({
       </div>
 
 
-
-      {/* Right Info Panel - Full Height Drawer */}
-      {showInfoPanel && (
-        <div className="absolute top-0 right-0 bottom-0 z-20 shadow-xl animate-slide-in-right">
-          <LeafSpringInfo onClose={() => setShowInfoPanel(false)} />
-        </div>
-      )}
     </div>
   );
 }
