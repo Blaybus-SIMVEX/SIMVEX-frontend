@@ -1,11 +1,11 @@
 'use client';
 
 import ObjectCard from '@/features/study/components/ObjectCard';
+import { IObjects } from '@/features/study/types';
 import { useApi } from '@/lib/useApi';
 import { PaginationContainer } from '@/shared/ui/PaginationContainer';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { IObjects } from '@/features/study/types';
 
 export function CardList() {
   const searchParams = useSearchParams();

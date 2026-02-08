@@ -47,8 +47,8 @@ export function CategoryFilter() {
               'cursor-pointer flex justify-center items-center w-[108px] px-2 pb-[3px] text-[16px] transition-all relative whitespace-nowrap flex-shrink-0',
 
               isSelected
-                ? "text-primary-600 font-bold border-b-2 border-primary-600 -mb-[1px] z-10"
-                : "text-gray-400 font-medium hover:text-gray-600 border-b-2 border-gray-400 -mb-[1px]"
+                ? 'text-primary-600 font-bold border-b-2 border-primary-600 -mb-[1px] z-10'
+                : 'text-gray-400 font-medium hover:text-gray-600 border-b-2 border-gray-400 -mb-[1px]',
             )}
           >
             {cat.label}
