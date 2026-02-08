@@ -13,6 +13,9 @@ const config: Config = {
       },
       colors: {
         'common-white': '#FFF',
+        'bg-main': '#F8F9FA', // App Background
+        'bg-3d': '#DDE2E8', // 3D Viewport Background
+        'text-navy': '#1D2D5B', // Active/Navy Text (Estimated)
         'gray': {
           50: '#FAFAFA',
           100: '#F5F5F5',
@@ -28,7 +31,7 @@ const config: Config = {
         'black': '#000',
         'primary': {
           50: '#F8FAFF',
-          100: '#E7EFFF',
+          100: '#E7EFFF', // Active State
           200: '#C0D6FF',
           300: '#9EBFFF',
           400: '#70A1FF',
