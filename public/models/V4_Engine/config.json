@@ -13,55 +13,217 @@
       "explosionDirection": [0, -1, 0]
     },
     {
-      "nodeName": "ConnectingRodCap",
-      "displayName": "커넥팅 로드 캡",
+      "nodeName": "ConnectingRodCap1",
+      "displayName": "커넥팅 로드 캡 #1",
       "fileName": "Connecting Rod Cap.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, -0.02, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, -0.5, -1]
     },
     {
-      "nodeName": "ConrodBolt",
-      "displayName": "커넥팅 로드 볼트",
+      "nodeName": "ConnectingRodCap2",
+      "displayName": "커넥팅 로드 캡 #2",
+      "fileName": "Connecting Rod Cap.glb",
+      "originalPosition": [-0.015, -0.015, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, -0.5, -1]
+    },
+    {
+      "nodeName": "ConnectingRodCap3",
+      "displayName": "커넥팅 로드 캡 #3",
+      "fileName": "Connecting Rod Cap.glb",
+      "originalPosition": [0.015, -0.015, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, -0.5, -1]
+    },
+    {
+      "nodeName": "ConnectingRodCap4",
+      "displayName": "커넥팅 로드 캡 #4",
+      "fileName": "Connecting Rod Cap.glb",
+      "originalPosition": [0.045, -0.01, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, -0.5, -1]
+    },
+    {
+      "nodeName": "ConrodBolt1",
+      "displayName": "커넥팅 로드 볼트 #1",
       "fileName": "Conrod Bolt.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, -0.018, 0.008],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 0, -1.5]
     },
     {
-      "nodeName": "ConnectingRod",
-      "displayName": "커넥팅 로드",
+      "nodeName": "ConrodBolt2",
+      "displayName": "커넥팅 로드 볼트 #2",
+      "fileName": "Conrod Bolt.glb",
+      "originalPosition": [-0.015, -0.013, 0.008],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, -1.5]
+    },
+    {
+      "nodeName": "ConrodBolt3",
+      "displayName": "커넥팅 로드 볼트 #3",
+      "fileName": "Conrod Bolt.glb",
+      "originalPosition": [0.015, -0.013, 0.008],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, -1.5]
+    },
+    {
+      "nodeName": "ConrodBolt4",
+      "displayName": "커넥팅 로드 볼트 #4",
+      "fileName": "Conrod Bolt.glb",
+      "originalPosition": [0.045, -0.008, 0.008],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, -1.5]
+    },
+    {
+      "nodeName": "ConnectingRod1",
+      "displayName": "커넥팅 로드 #1",
       "fileName": "Connecting Rod.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, 0.01, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 0.5, 0]
     },
     {
-      "nodeName": "PistonPin",
-      "displayName": "피스톤 핀",
+      "nodeName": "ConnectingRod2",
+      "displayName": "커넥팅 로드 #2",
+      "fileName": "Connecting Rod.glb",
+      "originalPosition": [-0.015, 0.02, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0.5, 0]
+    },
+    {
+      "nodeName": "ConnectingRod3",
+      "displayName": "커넥팅 로드 #3",
+      "fileName": "Connecting Rod.glb",
+      "originalPosition": [0.015, 0.02, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0.5, 0]
+    },
+    {
+      "nodeName": "ConnectingRod4",
+      "displayName": "커넥팅 로드 #4",
+      "fileName": "Connecting Rod.glb",
+      "originalPosition": [0.045, 0.03, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0.5, 0]
+    },
+    {
+      "nodeName": "PistonPin1",
+      "displayName": "피스톤 핀 #1",
       "fileName": "Piston Pin.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, 0.04, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [1, 1, 0]
     },
     {
-      "nodeName": "PistonRing",
-      "displayName": "피스톤 링",
+      "nodeName": "PistonPin2",
+      "displayName": "피스톤 핀 #2",
+      "fileName": "Piston Pin.glb",
+      "originalPosition": [-0.015, 0.055, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [1, 1, 0]
+    },
+    {
+      "nodeName": "PistonPin3",
+      "displayName": "피스톤 핀 #3",
+      "fileName": "Piston Pin.glb",
+      "originalPosition": [0.015, 0.055, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [1, 1, 0]
+    },
+    {
+      "nodeName": "PistonPin4",
+      "displayName": "피스톤 핀 #4",
+      "fileName": "Piston Pin.glb",
+      "originalPosition": [0.045, 0.07, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [1, 1, 0]
+    },
+    {
+      "nodeName": "PistonRing1",
+      "displayName": "피스톤 링 #1",
       "fileName": "Piston Ring.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, 0.055, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 1.5, 0]
     },
     {
-      "nodeName": "Piston",
-      "displayName": "피스톤",
+      "nodeName": "PistonRing2",
+      "displayName": "피스톤 링 #2",
+      "fileName": "Piston Ring.glb",
+      "originalPosition": [-0.015, 0.07, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 1.5, 0]
+    },
+    {
+      "nodeName": "PistonRing3",
+      "displayName": "피스톤 링 #3",
+      "fileName": "Piston Ring.glb",
+      "originalPosition": [0.015, 0.07, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 1.5, 0]
+    },
+    {
+      "nodeName": "PistonRing4",
+      "displayName": "피스톤 링 #4",
+      "fileName": "Piston Ring.glb",
+      "originalPosition": [0.045, 0.085, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 1.5, 0]
+    },
+    {
+      "nodeName": "Piston1",
+      "displayName": "피스톤 #1",
       "fileName": "Piston.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.045, 0.05, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 2, 0]
+    },
+    {
+      "nodeName": "Piston2",
+      "displayName": "피스톤 #2",
+      "fileName": "Piston.glb",
+      "originalPosition": [-0.015, 0.065, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 2, 0]
+    },
+    {
+      "nodeName": "Piston3",
+      "displayName": "피스톤 #3",
+      "fileName": "Piston.glb",
+      "originalPosition": [0.015, 0.065, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 2, 0]
+    },
+    {
+      "nodeName": "Piston4",
+      "displayName": "피스톤 #4",
+      "fileName": "Piston.glb",
+      "originalPosition": [0.045, 0.08, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 2, 0]

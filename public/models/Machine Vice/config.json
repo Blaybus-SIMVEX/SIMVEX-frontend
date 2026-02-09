@@ -16,7 +16,7 @@
       "nodeName": "Part6-fuhrungschiene",
       "displayName": "가이드 레일",
       "fileName": "Part6-fuhrungschiene.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [0, 0.02, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, -0.5, 0]
@@ -25,7 +25,7 @@
       "nodeName": "Part2-FesteBacke",
       "displayName": "고정 조",
       "fileName": "Part2 Feste Backe.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [0.06, 0.03, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [1, 0, 0]
@@ -34,7 +34,7 @@
       "nodeName": "Part3-loseBacke",
       "displayName": "이동 조",
       "fileName": "Part3-lose backe.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.02, 0.03, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [-1, 0, 0]
@@ -43,7 +43,7 @@
       "nodeName": "Part4-spindelsockel",
       "displayName": "스핀들 소켓",
       "fileName": "Part4 spindelsockel.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.05, 0.03, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [-1.5, 0, 0]
@@ -52,7 +52,7 @@
       "nodeName": "Part7-TrapezSpindel",
       "displayName": "사다리꼴 스핀들",
       "fileName": "Part7-TrapezSpindel.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.08, 0.035, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [-2, 0, 0]
@@ -61,7 +61,7 @@
       "nodeName": "Part9-Druckhulse",
       "displayName": "압력 슬리브",
       "fileName": "Part9-Druckhulse.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.12, 0.035, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [-2.5, 0, 0]
@@ -70,7 +70,7 @@
       "nodeName": "Part5-Spannbacke",
       "displayName": "클램핑 조",
       "fileName": "Part5-Spannbacke.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [0.02, 0.06, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 1, 0]
@@ -79,7 +79,7 @@
       "nodeName": "Part1-Fuhrung",
       "displayName": "가이드",
       "fileName": "Part1 Fuhrung.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.02, 0.05, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 1.5, 0]

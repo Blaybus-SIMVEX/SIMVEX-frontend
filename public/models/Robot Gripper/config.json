@@ -7,7 +7,7 @@
       "nodeName": "BaseMountingBracket",
       "displayName": "마운팅 브라켓",
       "fileName": "Base Mounting bracket.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [0, 0.04, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 1, 0]
@@ -16,7 +16,7 @@
       "nodeName": "BasePlate",
       "displayName": "베이스 플레이트",
       "fileName": "Base Plate.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [0, 0.02, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 0.5, 0]
@@ -31,46 +31,109 @@
       "explosionDirection": [0, 0, 0]
     },
     {
-      "nodeName": "GearLink1",
-      "displayName": "기어 링크 1",
+      "nodeName": "GearLink1-Left",
+      "displayName": "기어 링크 1 (좌)",
       "fileName": "Gear link 1.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.015, -0.01, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [-0.5, -0.5, 0]
     },
     {
-      "nodeName": "GearLink2",
-      "displayName": "기어 링크 2",
-      "fileName": "Gear link 2.glb",
-      "originalPosition": [0, 0, 0],
+      "nodeName": "GearLink1-Right",
+      "displayName": "기어 링크 1 (우)",
+      "fileName": "Gear link 1.glb",
+      "originalPosition": [0.015, -0.01, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0.5, -0.5, 0]
     },
     {
-      "nodeName": "Link",
-      "displayName": "링크",
+      "nodeName": "GearLink2-Left",
+      "displayName": "기어 링크 2 (좌)",
+      "fileName": "Gear link 2.glb",
+      "originalPosition": [-0.02, -0.015, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [-0.5, -0.5, 0]
+    },
+    {
+      "nodeName": "GearLink2-Right",
+      "displayName": "기어 링크 2 (우)",
+      "fileName": "Gear link 2.glb",
+      "originalPosition": [0.02, -0.015, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0.5, -0.5, 0]
+    },
+    {
+      "nodeName": "Link-Left",
+      "displayName": "링크 (좌)",
       "fileName": "Link.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.025, -0.025, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [0, -1, 0]
+      "explosionDirection": [-0.5, -1, 0]
     },
     {
-      "nodeName": "Gripper",
-      "displayName": "그리퍼",
+      "nodeName": "Link-Right",
+      "displayName": "링크 (우)",
+      "fileName": "Link.glb",
+      "originalPosition": [0.025, -0.025, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0.5, -1, 0]
+    },
+    {
+      "nodeName": "Gripper-Left",
+      "displayName": "그리퍼 (좌)",
       "fileName": "Gripper.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.03, -0.04, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [0, -1.5, 0]
+      "explosionDirection": [-0.5, -1.5, 0]
     },
     {
-      "nodeName": "Pin",
-      "displayName": "핀",
+      "nodeName": "Gripper-Right",
+      "displayName": "그리퍼 (우)",
+      "fileName": "Gripper.glb",
+      "originalPosition": [0.03, -0.04, 0],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0.5, -1.5, 0]
+    },
+    {
+      "nodeName": "Pin1",
+      "displayName": "핀 #1",
       "fileName": "Pin.glb",
-      "originalPosition": [0, 0, 0],
+      "originalPosition": [-0.015, -0.01, 0.005],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, 1]
+    },
+    {
+      "nodeName": "Pin2",
+      "displayName": "핀 #2",
+      "fileName": "Pin.glb",
+      "originalPosition": [0.015, -0.01, 0.005],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, 1]
+    },
+    {
+      "nodeName": "Pin3",
+      "displayName": "핀 #3",
+      "fileName": "Pin.glb",
+      "originalPosition": [-0.025, -0.025, 0.005],
+      "originalRotation": [0, 0, 0, 1],
+      "originalScale": [1, 1, 1],
+      "explosionDirection": [0, 0, 1]
+    },
+    {
+      "nodeName": "Pin4",
+      "displayName": "핀 #4",
+      "fileName": "Pin.glb",
+      "originalPosition": [0.025, -0.025, 0.005],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
       "explosionDirection": [0, 0, 1]
