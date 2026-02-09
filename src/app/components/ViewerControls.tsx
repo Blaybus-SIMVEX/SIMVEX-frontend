@@ -11,6 +11,8 @@ interface ViewerControlsProps {
   onToggleFullscreen: () => void;
   showTooltip?: boolean;
   onTooltipDismiss?: () => void;
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
 }
 
 export default function ViewerControls({
@@ -19,15 +21,11 @@ export default function ViewerControls({
   onToggleFullscreen,
   showTooltip = false,
   onTooltipDismiss,
+  onZoomIn,
+  onZoomOut,
 }: ViewerControlsProps) {
-  // Figma styles
-  // Frame 65:1693 'step-slider'
-  // Background: #ECECEC, width 16px, rounded-full
-  // Ticks: #FAFAFA, width 4px, height 2px
-  // Handle: #171717, width 20px, height 31px, rounded-full
-
   // Determine tick count based on Figma design which shows about 10 intervals
-  const totalSteps = 10;
+  const totalSteps = 5;
 
   return (
     <div className="absolute left-6 top-6 bottom-6 flex flex-col justify-between items-center pointer-events-none z-10 w-12">
@@ -97,10 +95,16 @@ export default function ViewerControls({
 
       {/* 3. Zoom Controls (Bottom) */}
       <div className="flex flex-col gap-2 pointer-events-auto">
-        <button className="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors text-[#333333]">
+        <button
+          onClick={onZoomIn}
+          className="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors text-[#333333]"
+        >
           <ZoomInIcon />
         </button>
-        <button className="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors text-[#333333]">
+        <button
+          onClick={onZoomOut}
+          className="w-[30px] h-[30px] flex items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors text-[#333333]"
+        >
           <ZoomOutIcon />
         </button>
       </div>
