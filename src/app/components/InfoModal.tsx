@@ -1,7 +1,15 @@
 'use client';
 
 import { useObjectDetail } from '@/features/3d-viewer/api/use3DViewer';
+import { IComponent } from '@/features/3d-viewer/types';
 import { useEffect, useState } from 'react';
+
+import dynamic from 'next/dynamic';
+
+const ComponentPreview = dynamic(() => import('@/features/3d-viewer/components/ComponentPreview'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-100 animate-pulse rounded-[4px]" />
+});
 
 interface InfoModalProps {
   objectId: number;
@@ -15,15 +23,10 @@ export default function InfoModal({ objectId, onClose }: InfoModalProps) {
   console.log(objectDetail);
 
   useEffect(() => {
-    if (objectId) {
+    if (objectId && objectId > 0) {
       fetchObjectDetail(objectId);
     }
   }, [objectId, fetchObjectDetail]);
-
-  // 부품 선택 시 detail 탭으로 전환
-  const handleComponentClick = () => {
-    setActiveTab('detail');
-  };
 
   // 완제품 탭 클릭
   const handleProductTabClick = () => {
@@ -156,16 +159,16 @@ export default function InfoModal({ objectId, onClose }: InfoModalProps) {
                   return (
                     <div
                       key={i}
-                      className="aspect-square bg-[#F5F5F5] rounded-[4px] overflow-hidden flex items-center justify-center"
+                      className="aspect-square bg-[#F5F5F5] rounded-[4px] overflow-hidden flex items-center justify-center relative border border-gray-100"
                     >
-                      {component?.imageUrl ? (
-                        <img
-                          src={component.imageUrl}
-                          alt={component.name}
-                          className="w-full h-full object-cover"
-                        />
+                      {component?.modelFileUrl ? (
+                        <div className="w-full h-full">
+                           <ComponentPreview modelUrl={component.modelFileUrl} />
+                        </div>
                       ) : (
-                        <div className="w-full h-full bg-[#EEEEEE]" />
+                        <div className="flex items-center justify-center w-full h-full">
+                           <div className="w-8 h-8 rounded-full bg-gray-200" />
+                        </div>
                       )}
                     </div>
                   );
@@ -174,7 +177,7 @@ export default function InfoModal({ objectId, onClose }: InfoModalProps) {
 
               {/* Text List */}
               <div className="space-y-5">
-                {objectDetail?.components?.map((component) => (
+                {objectDetail?.components?.map((component: IComponent) => (
                   <div key={component.id} className="border-b border-[#ECECEC] last:border-0 pb-3 last:pb-0">
                     <h3 className="font-semibold text-[14px] text-[#171717] mb-[2px]">
                       {component.name} ({component.nameEn})

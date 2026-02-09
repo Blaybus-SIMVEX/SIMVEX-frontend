@@ -16,7 +16,6 @@ export interface IComponent {
   modelFileUrl: string;
   material: string;
   role: string;
-  imageUrl?: string;
 }
 
 export interface IComponentList {
