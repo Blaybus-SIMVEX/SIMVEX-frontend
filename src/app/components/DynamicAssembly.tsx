@@ -110,7 +110,6 @@ export function DynamicAssembly({ config, onSelectPart, assemblyStep }: DynamicA
 
   const handleClick = (e: ThreeEvent<MouseEvent>, nodeName: string, displayName: string) => {
     e.stopPropagation();
-    console.log('Clicked part:', nodeName);
 
     if (nodeName === selectedNodeName) {
       setSelectedNodeName(null);
