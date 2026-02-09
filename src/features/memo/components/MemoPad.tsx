@@ -72,14 +72,15 @@ export default function MemoPad({ objectId }: MemoPadProps) {
   };
 
   const handleDeleteMemo = async (memoId: number) => {
-    if (isActioning) return;
+    const token = localStorage.getItem('session-token');
+    if (!token || isActioning) return;
 
     try {
-      await deleteMemo(memoId, sessionToken);
-      // 삭제 후 데이터 갱신 (데이터가 줄어 페이지가 빌 경우에 대한 처리는 복잡하므로 단순 갱신)
-      fetchMemos(objectId, sessionToken, currentPage, pageSize);
+      await deleteMemo(memoId, token);
+      fetchMemos(objectId, token, currentPage, pageSize);
     } catch (e) {
-      console.error('Failed to delete memo', e);
+      console.error('메모 삭제 실패', e);
+      alert('메모 삭제에 실패했습니다.');
     }
   };
 

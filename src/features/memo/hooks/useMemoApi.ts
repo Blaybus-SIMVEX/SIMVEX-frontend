@@ -59,7 +59,6 @@ export const useMemoActions = () => {
 
   const deleteMemo = useCallback(
     async (memoId: number, token: string) => {
-      // DELETE는 Body가 없으므로 두 번째 인자가 바로 options입니다.
       return remove(`/api/memos/${memoId}`, {
         headers: { sessionToken: token },
       });
