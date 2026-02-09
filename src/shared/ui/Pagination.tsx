@@ -3,8 +3,7 @@
 import DoubleChevronLeftIcon from '@/assets/icons/chevron-double-left.svg';
 import DoubleChevronRightIcon from '@/assets/icons/chevron-double-right.svg';
 import ChevronLeftIcon from '@/assets/icons/chevron-lefty.svg';
-// TODO: 오른쪽 아이콘으로 변경 필요
-import ChevronRightIcon from '@/assets/icons/chevron-lefty.svg';
+import ChevronRightIcon from '@/assets/icons/chevron-right.svg';
 import { clsx } from 'clsx';
 
 interface PaginationProps {
