@@ -11,8 +11,8 @@ interface Message {
   content: string;
 }
 
-export function useChatStream() {
-  const [messages, setMessages] = useState<Message[]>([]);
+export function useChatStream(initialMessages: Message[] = []) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = useCallback(async (question: string, object3DId: number) => {

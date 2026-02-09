@@ -1,29 +1,23 @@
 'use client';
 
-import { useAIChat } from '@/features/3d-viewer/api/use3DViewer';
+import { useChatStream } from '@/features/ai-chat/hooks/useChatStream';
 import { useEffect, useRef, useState } from 'react';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-}
 
 interface AIAssistantProps {
   objectId: number;
 }
 
 export default function AIAssistant({ objectId }: AIAssistantProps) {
-  const { sendMessage, isLoading } = useAIChat();
-  const [messages, setMessages] = useState<Message[]>([
+  const [input, setInput] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { messages, sendMessage, isLoading } = useChatStream([
     {
       id: 'welcome',
       role: 'assistant',
       content: '궁금한 점이 있다면\n언제든지 물어보세요!',
     },
   ]);
-  const [input, setInput] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,50 +27,12 @@ export default function AIAssistant({ objectId }: AIAssistantProps) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async (e?: React.FormEvent) => {
+  const handleSend = async (e?: React.SubmitEvent) => {
     e?.preventDefault();
     if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
-
-    try {
-      const response = await sendMessage({
-        object3DId: objectId,
-        question: input,
-        conversationHistory: messages.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
-      });
-
-      if (response) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            role: 'assistant',
-            content: response.answer,
-          },
-        ]);
-      }
-    } catch (e) {
-      console.error('Failed to send message', e);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: '죄송합니다. 오류가 발생했습니다.',
-        },
-      ]);
-    }
+    await sendMessage(currentInput, objectId);
   };
 
   return (
