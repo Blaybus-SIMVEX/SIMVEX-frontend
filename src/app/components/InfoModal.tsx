@@ -18,9 +18,22 @@ interface InfoModalProps {
 
 export default function InfoModal({ objectId, onClose, selectedPartName }: InfoModalProps) {
   const [activeTab, setActiveTab] = useState<'product' | 'detail'>('product');
+  const [selectedComponentIds, setSelectedComponentIds] = useState<Set<number>>(new Set());
 
   const { objectDetail, isLoading, error, fetchObjectDetail } = useObjectDetail();
-  console.log(objectDetail);
+
+  // 부품 이미지 클릭 핸들러 (다중 선택)
+  const handleComponentClick = (componentId: number) => {
+    setSelectedComponentIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(componentId)) {
+        newSet.delete(componentId);
+      } else {
+        newSet.add(componentId);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     if (objectId && objectId > 0) {
@@ -29,7 +42,6 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
   }, [objectId, fetchObjectDetail]);
 
   // 부품 선택 시 detail 탭으로 전환
-  // 부품 선택 시 detail 탭으로 전환 (Render Loop 내에서 상태 조정)
   const [prevSelectedPartName, setPrevSelectedPartName] = useState(selectedPartName);
   if (selectedPartName !== prevSelectedPartName) {
     setPrevSelectedPartName(selectedPartName);
@@ -114,52 +126,63 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
       </div>
 
       {/* Content */}
-      <div className="space-y-4 mt-1 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent pr-2">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {activeTab === 'product' ? (
-          <>
+          <div className="space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent pr-2">
             {/* 이론 섹션 */}
-            <div className="space-y-2">
-              <h3 className="font-bold text-[16px] text-[#222222]">이론</h3>
-              <p className="text-[14px] text-[#444444] leading-[1.6]">{objectDetail?.theory || ''}</p>
-            </div>
-          </>
+            <h3 className="font-bold text-[16px] text-[#222222]">이론</h3>
+            <p className="text-[14px] text-[#444444] leading-[1.6]">{objectDetail?.theory || ''}</p>
+          </div>
         ) : (
-          <>
-            {/* 부품 상세 정보 목록 */}
-            <div className="space-y-6 px-1">
-              {/* Image Grid */}
-              <div className="grid grid-cols-4 gap-2">
-                {[...Array(8)].map((_, i) => {
-                  const component = objectDetail?.components?.[i];
-                  return (
-                    <div
-                      key={i}
-                      className="aspect-square bg-[#F5F5F5] rounded-[4px] overflow-hidden flex items-center justify-center relative border border-gray-100"
-                    >
-                      {component?.modelFileUrl ? (
-                        <div className="w-full h-full">
-                          <ComponentPreview modelUrl={component.modelFileUrl} />
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center w-full h-full">
-                          <div className="w-8 h-8 rounded-full bg-gray-200" />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Text List */}
-              <div className="space-y-5">
-                {objectDetail?.components?.map((component: IComponent) => (
-                  <div key={component.id} className="border-b border-[#ECECEC] last:border-0 pb-3 last:pb-0">
-                    <h3 className="font-semibold text-[14px] text-[#171717] mb-[2px]">
-                      {component.name} ({component.nameEn})
-                    </h3>
-                    <p className="font-medium text-[12px] text-[#767676] leading-[140%] break-keep">{component.role}</p>
+          <div className="flex flex-col gap-6 px-1 flex-1 overflow-hidden">
+            {/* Image Grid - 고정 영역 */}
+            <div className="grid grid-cols-4 gap-2 flex-shrink-0">
+              {[...Array(8)].map((_, i) => {
+                const component = objectDetail?.components?.[i];
+                const isSelected = component && selectedComponentIds.has(component.id);
+                return (
+                  <div
+                    key={i}
+                    onClick={() => component && handleComponentClick(component.id)}
+                    className={`aspect-square bg-[#F5F5F5] rounded-[4px] overflow-hidden flex items-center justify-center relative cursor-pointer transition-all ${
+                      isSelected
+                        ? 'border border-[#2C74FF]'
+                        : 'border border-gray-100 hover:border-gray-300'
+                    }`}
+                  >
+                    {component?.modelFileUrl ? (
+                      <div className="w-full h-full">
+                        <ComponentPreview modelUrl={component.modelFileUrl} />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-full h-full">
+                        <div className="w-8 h-8 rounded-full bg-gray-200" />
+                      </div>
+                    )}
                   </div>
-                ))}
+                );
+              })}
+            </div>
+
+            {/* Text List - 스크롤 영역 */}
+            <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent pr-2">
+              <div className="space-y-5">
+                {selectedComponentIds.size > 0 ? (
+                  objectDetail?.components
+                    ?.filter((component: IComponent) => selectedComponentIds.has(component.id))
+                    .map((component: IComponent) => (
+                      <div key={component.id} className="border-b border-[#ECECEC] last:border-0 pb-3 last:pb-0">
+                        <h3 className="font-semibold text-[14px] text-[#171717] mb-[2px]">
+                          {component.name} ({component.nameEn})
+                        </h3>
+                        <p className="font-medium text-[12px] text-[#767676] leading-[140%] break-keep">{component.role}</p>
+                      </div>
+                    ))
+                ) : (
+                  <div className="flex items-center justify-center h-20 text-[#999999] text-[13px]">
+                    부품을 선택하면 설명이 표시됩니다.
+                  </div>
+                )}
               </div>
 
               {!objectDetail?.components?.length && (
@@ -168,7 +191,7 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

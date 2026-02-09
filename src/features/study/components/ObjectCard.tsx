@@ -1,13 +1,19 @@
 import { ObjectData } from '@/features/study/types';
 import Tags from '@/shared/ui/Tags';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   data: ObjectData;
 }
 
 export default function ObjectCard({ data, ...rest }: Props) {
-  console.log(data);
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/study/${data.id}`);
+  };
+
   return (
     <article
       className="
@@ -17,7 +23,11 @@ export default function ObjectCard({ data, ...rest }: Props) {
         rounded-[8px]
         shadow-[0_0_10px_0_rgba(0,0,0,0.10)]
         overflow-hidden
+        cursor-pointer
+        hover:shadow-[0_0_15px_0_rgba(0,0,0,0.15)]
+        transition-shadow
       "
+      onClick={handleClick}
       {...rest}
     >
       <div className="relative w-full h-[148px] bg-gray-100">
