@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemoActions, useMemos } from '@/features/3d-viewer/api/use3DViewer';
-import { IMemo } from '@/features/3d-viewer/types';
+import { useMemoActions, useMemos } from '@/features/memo/hooks/useMemoApi';
+import { IMemo } from '@/features/memo/types';
 import { useEffect, useState } from 'react';
 
 interface MemoPadProps {
@@ -9,7 +9,10 @@ interface MemoPadProps {
 }
 
 export default function MemoPad({ objectId }: MemoPadProps) {
-  const { memos, isLoading, fetchMemos } = useMemos();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+
+  const { memos, isLoading, fetchMemos, totalPages = 1 } = useMemos();
   const { createMemo, updateMemo, deleteMemo, isLoading: isActioning } = useMemoActions();
 
   const [isAdding, setIsAdding] = useState(false);
@@ -17,34 +20,34 @@ export default function MemoPad({ objectId }: MemoPadProps) {
   const [editingMemo, setEditingMemo] = useState<IMemo | null>(null);
   const [editText, setEditText] = useState('');
 
-  // Session ID management
-  const [sessionId, setSessionId] = useState('');
+  const [sessionToken, setSessionToken] = useState('');
 
   useEffect(() => {
-    // Generate or retrieve session ID on mount
-    let id = sessionStorage.getItem('simvex-session-id');
-    if (!id) {
-      id = `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      sessionStorage.setItem('simvex-session-id', id);
+    const token = localStorage.getItem('session-token');
+
+    if (token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSessionToken(token);
+    } else {
+      console.warn('로컬스토리지에 session-token이 없습니다.');
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSessionId(id);
   }, []);
 
   useEffect(() => {
-    if (objectId && sessionId) {
-      fetchMemos(objectId, sessionId);
+    if (objectId && sessionToken) {
+      fetchMemos(objectId, sessionToken, currentPage, pageSize);
     }
-  }, [objectId, sessionId, fetchMemos]);
+  }, [objectId, sessionToken, fetchMemos, currentPage]);
 
   const handleAddMemo = async () => {
     if (!newMemoText.trim() || isActioning) return;
 
     try {
-      await createMemo(objectId, sessionId, newMemoText.trim());
+      await createMemo(objectId, sessionToken, newMemoText.trim());
       setNewMemoText('');
       setIsAdding(false);
-      fetchMemos(objectId, sessionId);
+      setCurrentPage(1);
+      fetchMemos(objectId, sessionToken, 1, pageSize);
     } catch (e) {
       console.error('Failed to create memo', e);
     }
@@ -54,10 +57,10 @@ export default function MemoPad({ objectId }: MemoPadProps) {
     if (!editingMemo || !editText.trim() || isActioning) return;
 
     try {
-      await updateMemo(editingMemo.id, sessionId, editText.trim());
+      await updateMemo(editingMemo.id, sessionToken, editText.trim());
       setEditingMemo(null);
       setEditText('');
-      fetchMemos(objectId, sessionId);
+      fetchMemos(objectId, sessionToken, currentPage, pageSize);
     } catch (e) {
       console.error('Failed to update memo', e);
     }
@@ -67,8 +70,9 @@ export default function MemoPad({ objectId }: MemoPadProps) {
     if (isActioning) return;
 
     try {
-      await deleteMemo(memoId, sessionId);
-      fetchMemos(objectId, sessionId);
+      await deleteMemo(memoId, sessionToken);
+      // 삭제 후 데이터 갱신 (데이터가 줄어 페이지가 빌 경우에 대한 처리는 복잡하므로 단순 갱신)
+      fetchMemos(objectId, sessionToken, currentPage, pageSize);
     } catch (e) {
       console.error('Failed to delete memo', e);
     }
@@ -111,10 +115,10 @@ export default function MemoPad({ objectId }: MemoPadProps) {
         </button>
       </div>
 
-      {/* Content Area - Vertical List */}
+      {/* Content Area */}
       <div className="flex-1 w-full overflow-y-auto px-5 py-4 bg-white scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
         <div className="flex flex-col gap-3">
-          {/* Input Card - New Memo */}
+          {/* Input Card */}
           {isAdding && (
             <div className="w-full bg-white border-2 border-[#2C74FF] rounded-[8px] p-3 flex flex-col shadow-sm">
               <textarea
@@ -145,7 +149,7 @@ export default function MemoPad({ objectId }: MemoPadProps) {
             </div>
           )}
 
-          {/* Loading State */}
+          {/* Loading */}
           {isLoading && (
             <div className="w-full h-[100px] flex items-center justify-center">
               <p className="text-gray-400 text-sm">로딩 중...</p>
@@ -155,11 +159,13 @@ export default function MemoPad({ objectId }: MemoPadProps) {
           {/* Empty State */}
           {!isLoading && memos.length === 0 && !isAdding && (
             <div className="w-full h-[200px] bg-white rounded-[8px] flex flex-col items-center justify-center text-center">
-              <p className="text-[#555555] text-[12px]">학습중인 내용을 메모로 남겨보세요.</p>
+              <p className="text-[#555555] text-[12px]">
+                {currentPage === 1 ? '학습중인 내용을 메모로 남겨보세요.' : '메모가 없습니다.'}
+              </p>
             </div>
           )}
 
-          {/* Memo Cards */}
+          {/* Memo List */}
           {memos.map((memo) => (
             <div key={memo.id}>
               {editingMemo?.id === memo.id ? (
@@ -187,7 +193,6 @@ export default function MemoPad({ objectId }: MemoPadProps) {
               ) : (
                 // View Mode
                 <div className="w-full bg-[#E8F3FF] rounded-[8px] p-3 relative group hover:shadow-md transition-shadow border border-transparent hover:border-[#4880FF]/30">
-                  {/* Action Buttons */}
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
                     <button onClick={() => startEditing(memo)} className="text-[#8FB6FF] hover:text-[#4880FF] p-1">
                       <svg
@@ -229,6 +234,53 @@ export default function MemoPad({ objectId }: MemoPadProps) {
           ))}
         </div>
       </div>
+
+      {/* ✅ 3. 페이지네이션 컨트롤러 추가 (데이터가 있을 때만 표시) */}
+      {!isLoading && (memos.length > 0 || currentPage > 1) && (
+        <div className="px-5 py-3 border-t border-[#F5F5F5] flex items-center justify-center gap-4 bg-white">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent text-gray-600 transition-colors"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+
+          <span className="text-[12px] font-medium text-gray-500">
+            {currentPage} {totalPages > 0 && `/ ${totalPages}`}
+          </span>
+
+          <button
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={totalPages > 0 && currentPage >= totalPages}
+            className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 disabled:hover:bg-transparent text-gray-600 transition-colors"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
