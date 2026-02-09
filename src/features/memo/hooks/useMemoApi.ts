@@ -46,9 +46,11 @@ export const useMemoActions = () => {
     async (memoId: number, token: string, content: string) => {
       return update(
         `/api/memos/${memoId}`,
-        { content }, // Body
+        { content },
         {
-          headers: { sessionToken: token },
+          headers: {
+            sessionToken: token,
+          },
         },
       );
     },

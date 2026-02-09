@@ -56,15 +56,18 @@ export default function MemoPad({ objectId }: MemoPadProps) {
   };
 
   const handleUpdateMemo = async () => {
-    if (!editingMemo || !editText.trim() || isActioning) return;
+    const token = localStorage.getItem('session-token');
+
+    if (!editingMemo || !token || !editText.trim() || isActioning) return;
 
     try {
-      await updateMemo(editingMemo.id, sessionToken, editText.trim());
+      await updateMemo(editingMemo.id, token, editText.trim());
+
       setEditingMemo(null);
       setEditText('');
-      fetchMemos(objectId, sessionToken, currentPage, pageSize);
+      fetchMemos(objectId, token, currentPage, pageSize);
     } catch (e) {
-      console.error('Failed to update memo', e);
+      console.error('메모 수정 실패', e);
     }
   };
 
