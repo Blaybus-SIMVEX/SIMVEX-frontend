@@ -40,11 +40,13 @@ export function DynamicAssembly({ config, onSelectPart, assemblyStep }: DynamicA
   const groupRef = useRef<THREE.Group>(null);
   const partsRef = useRef<Record<string, THREE.Group>>({});
 
+  console.log('[DynamicAssembly] Rendering with config:', config.productName);
+
   // State for persisted transforms (Developer Mode)
   const [savedTransforms, setSavedTransforms] = useState<Record<string, Partial<PartConfig>>>({});
 
   // localStorage key based on product name
-  const storageKey = `simvex-${config.productName.toLowerCase().replace(/\s/g, '-')}-transforms`;
+  const storageKey = `simvex-${config.productName.toLowerCase().replace(/\s/g, '-')}-transforms-v2`;
 
   // Load saved transforms from localStorage on mount
   // Load saved transforms from localStorage on mount
@@ -207,7 +209,10 @@ interface PartRendererProps {
 // Sub-component to load and render individual GLB
 const PartRenderer = React.forwardRef<THREE.Group, PartRendererProps>(({ part, selected, onClick }, ref) => {
   const { scene } = useGLTF(part.modelUrl) as unknown as GLTFResult;
-  const initializedRef = useRef(false);
+  const localRef = useRef<THREE.Group>(null);
+
+  // Expose the local ref to the parent
+  React.useImperativeHandle(ref, () => localRef.current as THREE.Group);
 
   const clone = useMemo(() => {
     const c = scene.clone();
@@ -231,31 +236,18 @@ const PartRenderer = React.forwardRef<THREE.Group, PartRendererProps>(({ part, s
     });
   }, [clone, selected]);
 
-  // Apply Initial Transforms - only override if config has non-zero values
+  // Apply Initial Transforms from config
   useEffect(() => {
-    if (ref && typeof ref !== 'function' && ref.current && !initializedRef.current) {
-      initializedRef.current = true;
-
-      // Check if originalPosition is non-zero (explicitly set in config)
-      const hasCustomPosition = part.originalPosition.some((v) => v !== 0);
-      const hasCustomRotation = part.originalRotation.some((v, i) => (i === 3 ? v !== 1 : v !== 0)); // quaternion default is [0,0,0,1]
-      const hasCustomScale = part.originalScale.some((v) => v !== 1);
-
-      // Only apply config transforms if they're explicitly set (non-default)
-      if (hasCustomPosition) {
-        ref.current.position.set(...part.originalPosition);
-      }
-      if (hasCustomRotation) {
-        ref.current.quaternion.set(...part.originalRotation);
-      }
-      if (hasCustomScale) {
-        ref.current.scale.set(...part.originalScale);
-      }
+    if (localRef.current) {
+      // Always apply transforms from config
+      localRef.current.position.set(...part.originalPosition);
+      localRef.current.quaternion.set(...part.originalRotation);
+      localRef.current.scale.set(...part.originalScale);
     }
-  }, [part, ref]);
+  }, [part.nodeName, part.originalPosition, part.originalRotation, part.originalScale]);
 
   return (
-    <group ref={ref} onClick={onClick}>
+    <group ref={localRef} onClick={onClick}>
       <primitive object={clone} />
     </group>
   );
