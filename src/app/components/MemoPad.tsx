@@ -27,6 +27,7 @@ export default function MemoPad({ objectId }: MemoPadProps) {
       id = `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
       sessionStorage.setItem('simvex-session-id', id);
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSessionId(id);
   }, []);
 
@@ -87,16 +88,16 @@ export default function MemoPad({ objectId }: MemoPadProps) {
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="px-5 py-4 flex items-center justify-between bg-white border-b border-[#F5F5F5]">
-        <h3 className="font-bold text-[18px] text-[#111111]">메모</h3>
+        <h3 className="font-semibold text-[20px] text-[#171717]">메모</h3>
         <button
           onClick={() => setIsAdding(true)}
           disabled={isActioning}
-          className="flex items-center gap-1 pl-3 pr-2 py-1.5 rounded-full border border-[#4880FF] text-[#4880FF] text-[13px] font-semibold bg-white hover:bg-blue-50 transition-colors disabled:opacity-50"
+          className="flex items-center gap-1 pl-3 pr-2 py-1.5 rounded-full border border-[#2C74FF] text-[#2C74FF] text-[12px] font-semibold bg-white hover:bg-blue-50 transition-colors disabled:opacity-50"
         >
           추가하기
           <svg
-            width="16"
-            height="16"
+            width="14"
+            height="14"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -115,7 +116,7 @@ export default function MemoPad({ objectId }: MemoPadProps) {
         <div className="flex flex-col gap-3">
           {/* Input Card - New Memo */}
           {isAdding && (
-            <div className="w-full bg-white border-2 border-[#4880FF] rounded-[8px] p-3 flex flex-col shadow-sm">
+            <div className="w-full bg-white border-2 border-[#2C74FF] rounded-[8px] p-3 flex flex-col shadow-sm">
               <textarea
                 autoFocus
                 value={newMemoText}
@@ -136,7 +137,7 @@ export default function MemoPad({ objectId }: MemoPadProps) {
                 <button
                   onClick={handleAddMemo}
                   disabled={isActioning || !newMemoText.trim()}
-                  className="text-xs bg-[#4880FF] text-white px-3 py-1 rounded hover:bg-blue-600 disabled:opacity-50"
+                  className="text-xs bg-[#2C74FF] text-white px-3 py-1 rounded hover:bg-blue-600 disabled:opacity-50"
                 >
                   저장
                 </button>
@@ -153,12 +154,8 @@ export default function MemoPad({ objectId }: MemoPadProps) {
 
           {/* Empty State */}
           {!isLoading && memos.length === 0 && !isAdding && (
-            <div className="w-full h-[100px] bg-[#F5F8FF] rounded-[8px] flex flex-col items-center justify-center text-center border border-[#EBF1FF]">
-              <p className="text-gray-400 text-sm">
-                학습중인 내용을
-                <br />
-                자유롭게 메모해보세요
-              </p>
+            <div className="w-full h-[200px] bg-white rounded-[8px] flex flex-col items-center justify-center text-center">
+              <p className="text-[#555555] text-[12px]">학습중인 내용을 메모로 남겨보세요.</p>
             </div>
           )}
 

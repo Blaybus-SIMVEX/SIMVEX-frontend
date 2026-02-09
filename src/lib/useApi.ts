@@ -17,7 +17,7 @@ export function useApi<T = unknown>() {
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : '알 수 없는 에러 발생';
         setError(errMsg);
-        throw err;
+        // throw err; // 에러를 다시 던지지 않음 -> UI에서 error state로 처리
       } finally {
         setIsLoading(false);
       }

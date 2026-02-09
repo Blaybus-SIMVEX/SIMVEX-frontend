@@ -2,7 +2,13 @@
 
 import { useObjectDetail } from '@/features/3d-viewer/api/use3DViewer';
 import { IComponent } from '@/features/3d-viewer/types';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+
+const ComponentPreview = dynamic(() => import('@/features/3d-viewer/components/ComponentPreview'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-gray-100 animate-pulse rounded-[4px]" />,
+});
 
 interface InfoModalProps {
   objectId: number;
@@ -12,27 +18,29 @@ interface InfoModalProps {
 
 export default function InfoModal({ objectId, onClose, selectedPartName }: InfoModalProps) {
   const [activeTab, setActiveTab] = useState<'product' | 'detail'>('product');
-  const [selectedComponent, setSelectedComponent] = useState<IComponent | null>(null);
 
   const { objectDetail, isLoading, error, fetchObjectDetail } = useObjectDetail();
   console.log(objectDetail);
 
   useEffect(() => {
-    if (objectId) {
+    if (objectId && objectId > 0) {
       fetchObjectDetail(objectId);
     }
   }, [objectId, fetchObjectDetail]);
 
   // 부품 선택 시 detail 탭으로 전환
-  const handleComponentClick = (component: IComponent) => {
-    setSelectedComponent(component);
-    setActiveTab('detail');
-  };
+  // 부품 선택 시 detail 탭으로 전환 (Render Loop 내에서 상태 조정)
+  const [prevSelectedPartName, setPrevSelectedPartName] = useState(selectedPartName);
+  if (selectedPartName !== prevSelectedPartName) {
+    setPrevSelectedPartName(selectedPartName);
+    if (selectedPartName) {
+      setActiveTab('detail');
+    }
+  }
 
-  // 완제품 탭 클릭 시 선택된 부품 초기화
+  // 완제품 탭 클릭
   const handleProductTabClick = () => {
     setActiveTab('product');
-    setSelectedComponent(null);
   };
 
   if (isLoading) {
@@ -57,15 +65,9 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
       <div className="flex justify-between items-start">
         <div className="flex flex-col gap-1">
           <h2 className="font-bold text-[18px] text-[#111111] leading-tight flex items-center gap-1">
-            {activeTab === 'product'
-              ? `${objectDetail?.name || ''} (${objectDetail?.nameEn || ''})`
-              : selectedComponent?.name || selectedPartName || '부품 상세'}
+            {objectDetail?.name || ''} ({objectDetail?.nameEn || ''})
           </h2>
-          <p className="text-[#666666] text-[13px] font-normal leading-relaxed">
-            {activeTab === 'product'
-              ? objectDetail?.description || ''
-              : selectedComponent?.role || '선택된 부품의 상세 설명입니다.'}
-          </p>
+          <p className="text-[#666666] text-[13px] font-normal leading-relaxed">{objectDetail?.description || ''}</p>
         </div>
         <button
           onClick={onClose}
@@ -93,7 +95,7 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
           onClick={handleProductTabClick}
           className={`px-3 py-1.5 text-[13px] font-semibold rounded-[20px] border transition-all ${
             activeTab === 'product'
-              ? 'bg-[#EBF1FF] text-[#4880FF] border-[#4880FF]'
+              ? 'bg-[#EBF1FF] text-[#2C74FF] border-[#2C74FF]'
               : 'bg-white text-[#666666] border-[#E5E5E5] hover:bg-gray-50'
           }`}
         >
@@ -103,7 +105,7 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
           onClick={() => setActiveTab('detail')}
           className={`px-3 py-1.5 text-[13px] font-semibold rounded-[20px] border transition-all ${
             activeTab === 'detail'
-              ? 'bg-[#EBF1FF] text-[#4880FF] border-[#4880FF]'
+              ? 'bg-[#EBF1FF] text-[#2C74FF] border-[#2C74FF]'
               : 'bg-white text-[#666666] border-[#E5E5E5] hover:bg-gray-50'
           }`}
         >
@@ -122,13 +124,13 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
             </div>
 
             {/* 부품 목록 섹션 */}
-            <div className="space-y-2 mt-4">
+            {/* <div className="space-y-2 mt-4">
               <h3 className="font-bold text-[16px] text-[#222222]">구성 부품</h3>
               <div className="space-y-2">
                 {objectDetail?.components?.map((component) => (
                   <button
                     key={component.id}
-                    onClick={() => handleComponentClick(component)}
+                    onClick={handleComponentClick}
                     className="w-full text-left p-3 bg-[#F8F9FA] rounded-lg hover:bg-[#EBF1FF] transition-colors border border-transparent hover:border-[#4880FF]/30"
                   >
                     <div className="flex items-center justify-between">
@@ -152,36 +154,53 @@ export default function InfoModal({ objectId, onClose, selectedPartName }: InfoM
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <>
-            {/* 부품 상세 정보 */}
-            {selectedComponent ? (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <h3 className="font-bold text-[16px] text-[#222222]">부품 정보</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-2">
-                      <span className="text-[13px] text-[#666666] min-w-[60px]">영문명</span>
-                      <span className="text-[14px] text-[#333333]">{selectedComponent.nameEn}</span>
+            {/* 부품 상세 정보 목록 */}
+            <div className="space-y-6 px-1">
+              {/* Image Grid */}
+              <div className="grid grid-cols-4 gap-2">
+                {[...Array(8)].map((_, i) => {
+                  const component = objectDetail?.components?.[i];
+                  return (
+                    <div
+                      key={i}
+                      className="aspect-square bg-[#F5F5F5] rounded-[4px] overflow-hidden flex items-center justify-center relative border border-gray-100"
+                    >
+                      {component?.modelFileUrl ? (
+                        <div className="w-full h-full">
+                          <ComponentPreview modelUrl={component.modelFileUrl} />
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full">
+                          <div className="w-8 h-8 rounded-full bg-gray-200" />
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-[13px] text-[#666666] min-w-[60px]">재질</span>
-                      <span className="text-[14px] text-[#333333]">{selectedComponent.material}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-[13px] text-[#666666] min-w-[60px]">역할</span>
-                      <span className="text-[14px] text-[#333333] leading-relaxed">{selectedComponent.role}</span>
-                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Text List */}
+              <div className="space-y-5">
+                {objectDetail?.components?.map((component: IComponent) => (
+                  <div key={component.id} className="border-b border-[#ECECEC] last:border-0 pb-3 last:pb-0">
+                    <h3 className="font-semibold text-[14px] text-[#171717] mb-[2px]">
+                      {component.name} ({component.nameEn})
+                    </h3>
+                    <p className="font-medium text-[12px] text-[#767676] leading-[140%] break-keep">{component.role}</p>
                   </div>
+                ))}
+              </div>
+
+              {!objectDetail?.components?.length && (
+                <div className="flex items-center justify-center h-32 text-[#666666] text-[13px]">
+                  부품 정보가 없습니다.
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-full text-[#666666] text-[14px]">
-                좌측 목록에서 부품을 선택해주세요
-              </div>
-            )}
+              )}
+            </div>
           </>
         )}
       </div>
