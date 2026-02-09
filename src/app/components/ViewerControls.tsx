@@ -40,12 +40,12 @@ export default function ViewerControls({
       </div>
 
       {/* 2. Information Button (Top) */}
-      <div className="pointer-events-auto relative group mt-2">
+      <div className="pointer-events-auto relative mt-2 group/info">
         <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors text-[#333333]">
           <AlertCircleIcon />
         </button>
 
-        <div className="absolute left-[52px] top-1/2 -translate-y-1/2 bg-[#222222] text-white text-[13px] px-4 py-3 rounded-[8px] shadow-xl pointer-events-none leading-[1.5] z-30 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute left-[52px] top-1/2 -translate-y-1/2 bg-[#222222] text-white text-[13px] px-4 py-3 rounded-[8px] shadow-xl pointer-events-none leading-[1.5] z-30 whitespace-nowrap opacity-0 group-hover/info:opacity-100 transition-opacity duration-200">
           <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 w-0 h-0 border-t-[6px] border-t-transparent border-r-[8px] border-r-[#222222] border-b-[6px] border-b-transparent"></div>
           오른쪽 버튼을 클릭 시<br />
           화면을 이동할 수 있습니다.
