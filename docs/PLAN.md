@@ -315,3 +315,62 @@
   "answer": "string",
   "role": "string"
 }
+
+# UI/UX 변경
+1. @InfoModal.tsx UI/UX 변경 
+
+완제품 
+Figma: https://www.figma.com/design/fc86ZlW5kQXLukZZBrU98z/%F0%9F%90%B4-%EB%A7%90-%EB%8B%AC%EB%A6%AC%EC%9E%90-%ED%95%99%EC%83%9D?node-id=65-1710&m=dev
+
+부품 상세 클릭 시 
+Figma: https://www.figma.com/design/fc86ZlW5kQXLukZZBrU98z/%F0%9F%90%B4-%EB%A7%90-%EB%8B%AC%EB%A6%AC%EC%9E%90-%ED%95%99%EC%83%9D?node-id=59-1213&m=dev
+
+2. @MemoPad.tsx UI/UX 변경
+Figma: https://www.figma.com/design/fc86ZlW5kQXLukZZBrU98z/%F0%9F%90%B4-%EB%A7%90-%EB%8B%AC%EB%A6%AC%EC%9E%90-%ED%95%99%EC%83%9D?node-id=65-1870&m=dev
+
+
+# 3D Viewer 기능 추가
+### 핵심 기능
+- 3D 오브젝트 뷰포트 출력
+- glTF 기반 3D 모델 렌더링
+- 화면 중앙 기준 기본 위치 배치
+- 초기 진입 시 적정 축척 자동 조정
+- 마우스 우클릭 드래그로 화면 회전
+- 실시간 렌더링 반영
+- 마우스 스크롤을 통한 확대/축소
+- 화면 중앙 기준 확대 방식 적용
+- 마우스 휠 클릭을 통한 화면 이동
+- 부품 단위 클릭 선택 가능
+- 선택 부품 하이라이트 표시
+- 동일 부품 재클릭 시 선택 해제
+- 부품: 자동차 엔진 / 드론 / 서스펜션 등 3D 조립 구성도
+- 분해도 조절 슬라이더 제공
+- 슬라이더 조작 시 부품 간 거리 변화
+- 부품별 상이한 분해 방향 적용
+
+
+0. @3DViewer.tsx
+  - public/models 파일들을 useComponents에서 불러오는 것으로 변경
+  
+
+
+### 미구현 리스트
+1. 부품 분해/조립 기능 (핵심 기능)
+ - 분해도 조절 슬라이더 동작 연동: @ViewerControls.tsx에 슬라이더 UI는 존재하지만, 실제 3D 모델(@DroneAssembly.tsx)과 연동되지 않았습니다. 슬라이더 값(assemblyStep)에 따라 부품이 이동하는 로직이 없습니다.
+
+ - 부품별 분해 방향/거리 적용: 각 부품이 분해될 때 이동해야 할 방향(Vector)와 거리 값이 정의되지 않았으며, 이를 계산하는 로직이 구현되어 있지 않습니다. 현재는 단순히 완제품(drone.glb)만 렌더링하고 있습니다.
+
+2. 화면 제어 기능
+ - 줌 인/아웃 버튼 기능: UI(+, - 버튼)는 존재하지만 클릭 시 실제로 카메라 줌을 제어하는 핸들러가 연결되어 있지 않습니다.
+ - 전체화면 기능: @ViewerControls.tsx에 onToggleFullscreen이 전달되고 있지만, 버튼 클릭 시 동작하는지 확인이 필요합니다 (코드상 로직은 존재하나, 실제 동작 여부 확인 필요).
+
+3. 모델 로딩 및 확장성
+ - 다중 모델 지원: 3DViewer 컴포넌트는 modelType props를 받지만, 내부적으로 @DroneAssembly.tsx만 렌더링하도록 하드코딩되어 있습니다. (engine 타입일 경우 처리 로직 부재)
+
+
+
+# 추가 수정사항
+## StudyViewerContainer
+1. modelType은 objectId를 이용하여 API를 호출하여 가져온다.
+
+

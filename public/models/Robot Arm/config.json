@@ -19,7 +19,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [0, 0.5, 0]
+      "explosionDirection": [0, 1, 0]
     },
     {
       "nodeName": "Part3",
@@ -28,7 +28,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [0.5, 1, 0]
+      "explosionDirection": [0, 2, 0]
     },
     {
       "nodeName": "Part4",
@@ -37,7 +37,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [1, 1.5, 0]
+      "explosionDirection": [0, 3, 0]
     },
     {
       "nodeName": "Part5",
@@ -46,7 +46,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [1.5, 2, 0]
+      "explosionDirection": [0, 4, 0]
     },
     {
       "nodeName": "Part6",
@@ -55,7 +55,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [2, 2.5, 0]
+      "explosionDirection": [0, 5, 0]
     },
     {
       "nodeName": "Part7",
@@ -64,7 +64,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [2.5, 3, 0]
+      "explosionDirection": [0, 6, 0]
     },
     {
       "nodeName": "Part8",
@@ -73,7 +73,7 @@
       "originalPosition": [0, 0, 0],
       "originalRotation": [0, 0, 0, 1],
       "originalScale": [1, 1, 1],
-      "explosionDirection": [3, 3.5, 0]
+      "explosionDirection": [0, 7, 0]
     }
   ]
 }
