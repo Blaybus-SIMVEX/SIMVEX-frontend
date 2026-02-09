@@ -120,13 +120,17 @@ export default function MemoPad({ objectId }: MemoPadProps) {
         <div className="flex flex-col gap-3">
           {/* Input Card */}
           {isAdding && (
-            <div className="w-full bg-white border-2 border-[#2C74FF] rounded-[8px] p-3 flex flex-col shadow-sm">
+            <div className="w-full bg-white border-1 border-[#2C74FF] rounded-[8px] p-3 flex flex-col shadow-sm">
               <textarea
                 autoFocus
                 value={newMemoText}
                 onChange={(e) => setNewMemoText(e.target.value)}
                 placeholder="내용을 입력하세요"
-                className="w-full h-[60px] resize-none border-none focus:ring-0 text-[14px] leading-relaxed p-0 placeholder-gray-400"
+                className="w-full h-[60px] resize-none text-[14px] leading-relaxed p-2 bg-gray-100 rounded-md placeholder-gray-400
+    border-transparent
+    focus:border-transparent
+    focus:ring-0
+    focus:outline-none"
               />
               <div className="flex justify-end gap-2 mt-2 pt-2 border-t border-gray-100">
                 <button
@@ -170,12 +174,16 @@ export default function MemoPad({ objectId }: MemoPadProps) {
             <div key={memo.id}>
               {editingMemo?.id === memo.id ? (
                 // Edit Mode
-                <div className="w-full bg-white border-2 border-[#4880FF] rounded-[8px] p-3 flex flex-col shadow-sm">
+                <div className="w-full bg-white border-1 border-[#4880FF] rounded-[8px] p-3 flex flex-col shadow-sm">
                   <textarea
                     autoFocus
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className="w-full h-[60px] resize-none border-none focus:ring-0 text-[14px] leading-relaxed p-0"
+                    className="w-full h-[60px] resize-none text-[14px] leading-relaxed p-2 bg-gray-100 rounded-md placeholder-gray-400
+    border-transparent
+    focus:border-transparent
+    focus:ring-0
+    focus:outline-none"
                   />
                   <div className="flex justify-end gap-2 mt-2 pt-2 border-t border-gray-100">
                     <button onClick={cancelEditing} className="text-xs text-gray-500 hover:text-gray-800">
@@ -235,7 +243,6 @@ export default function MemoPad({ objectId }: MemoPadProps) {
         </div>
       </div>
 
-      {/* ✅ 3. 페이지네이션 컨트롤러 추가 (데이터가 있을 때만 표시) */}
       {!isLoading && (memos.length > 0 || currentPage > 1) && (
         <div className="px-5 py-3 border-t border-[#F5F5F5] flex items-center justify-center gap-4 bg-white">
           <button
