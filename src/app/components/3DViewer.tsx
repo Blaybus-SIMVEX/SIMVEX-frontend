@@ -63,6 +63,7 @@ function getInitialCameraState(modelType: string): CameraState | null {
 // 카메라 상태 저장을 위한 내부 컴포넌트
 interface CameraControllerProps {
   modelType: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   controlsRef: React.MutableRefObject<any>;
 }
 
@@ -76,7 +77,8 @@ function CameraController({ modelType, controlsRef }: CameraControllerProps) {
       clearTimeout(saveTimeoutRef.current);
     }
     saveTimeoutRef.current = setTimeout(() => {
-      const orbitControls = controlsRef.current;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const orbitControls = controlsRef.current as any;
       if (orbitControls && orbitControls.target) {
         const target = orbitControls.target as THREE.Vector3;
         const state: CameraState = {
@@ -90,10 +92,12 @@ function CameraController({ modelType, controlsRef }: CameraControllerProps) {
 
   // 카메라 변경 이벤트 리스너 - change 이벤트 사용 (모든 조작 감지)
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const controls = controlsRef.current as any;
+
     const attachListeners = () => {
-      const orbitControls = controlsRef.current;
-      if (orbitControls) {
-        orbitControls.addEventListener('change', saveCameraState);
+      if (controls) {
+        controls.addEventListener('change', saveCameraState);
         return true;
       }
       return false;
@@ -109,9 +113,8 @@ function CameraController({ modelType, controlsRef }: CameraControllerProps) {
     tryAttach(10);
 
     return () => {
-      const orbitControls = controlsRef.current;
-      if (orbitControls) {
-        orbitControls.removeEventListener('change', saveCameraState);
+      if (controls) {
+        controls.removeEventListener('change', saveCameraState);
       }
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
@@ -133,14 +136,6 @@ export default function ThreeDViewer({ onSelectPart, modelType }: ThreeDViewerPr
   const initialCameraState = getInitialCameraState(modelType);
   const initialCameraPosition = initialCameraState?.position || DEFAULT_CAMERA_POSITION;
   const initialCameraTarget = initialCameraState?.target || DEFAULT_CAMERA_TARGET;
-
-  // modelType 변경 시 해당 모델의 저장된 값 로드
-  useEffect(() => {
-    const saved = localStorage.getItem(`${ASSEMBLY_STEP_STORAGE_KEY}-${modelType}`);
-    if (saved) {
-      setAssemblyStep(Number(saved));
-    }
-  }, [modelType]);
 
   // localStorage에 assemblyStep 저장
   useEffect(() => {
@@ -193,15 +188,19 @@ export default function ThreeDViewer({ onSelectPart, modelType }: ThreeDViewerPr
 
   const handleZoomIn = () => {
     if (orbitControlsRef.current) {
-      orbitControlsRef.current.dollyOut(1.2);
-      orbitControlsRef.current.update();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (orbitControlsRef.current as any).dollyOut(1.2);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (orbitControlsRef.current as any).update();
     }
   };
 
   const handleZoomOut = () => {
     if (orbitControlsRef.current) {
-      orbitControlsRef.current.dollyIn(1.2);
-      orbitControlsRef.current.update();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (orbitControlsRef.current as any).dollyIn(1.2);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (orbitControlsRef.current as any).update();
     }
   };
 

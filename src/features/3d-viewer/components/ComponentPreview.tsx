@@ -1,6 +1,6 @@
 'use client';
 
-import { Bounds, Center, OrbitControls, Resize, useGLTF } from '@react-three/drei';
+import { Center, OrbitControls, Resize, useGLTF } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Component, ReactNode, Suspense } from 'react';
 
