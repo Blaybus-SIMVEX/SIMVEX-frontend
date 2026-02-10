@@ -1,6 +1,6 @@
 'use client';
 
-import { OrbitControls, Stage, useGLTF } from '@react-three/drei';
+import { Center, OrbitControls, Resize, useGLTF } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Component, ReactNode, Suspense } from 'react';
 
@@ -36,12 +36,16 @@ function Model({ url }: { url: string }) {
 export default function ComponentPreview({ modelUrl }: ComponentPreviewProps) {
   return (
     <div className="w-full h-full bg-[#f0f0f0] rounded-[4px] overflow-hidden">
-      <Canvas shadows dpr={[1, 2]} camera={{ fov: 50 }}>
+      <Canvas shadows dpr={[1, 2]} camera={{ fov: 50, position: [0, 2, 10] }}>
         <ErrorBoundary fallback={null}>
           <Suspense fallback={null}>
-            <Stage environment="city" intensity={0.6} adjustCamera>
-              <Model url={modelUrl} />
-            </Stage>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <Resize scale={6}>
+              <Center>
+                <Model url={modelUrl} />
+              </Center>
+            </Resize>
           </Suspense>
         </ErrorBoundary>
         <OrbitControls autoRotate autoRotateSpeed={4} enableZoom={false} enablePan={false} />
